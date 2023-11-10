@@ -8,3 +8,20 @@
 - PATCH/task/id: Mark as completed
 
 - GET/user: Get user information
+
+# Task
+- title
+- description
+- status
+- datestart
+- dateend
+- id
+- user
+- createdAt
+- modifiedAt
+- deletedAt
+
+# User
+- firstname
+- lastname
+- email
