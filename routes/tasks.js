@@ -1,44 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
-const tasks = [
-    {
-      title: "Preparar las maletas",
-      description: "El viaje hacia marte va a durar unos cuantos meses, preparar ropa de verano e invierno",
-      status: "PENDING", //PENDING, IN PROGESS, COMPLETED
-      datestart: "2023-11-08 22:00:00",
-      dateend: "2023-12-08 22:00:00",
-      id: "asd4251asd54",
-      user: "albertsube",
-      createdAt: "2023-11-10 22:03:00",
-      modifiedAt: "2023-11-10 22:05:00",
-      deletedAt: null,
-    },
-    {
-      title: "Preparar las maletas",
-      description: "El viaje hacia marte va a durar unos cuantos meses, preparar ropa de verano e invierno",
-      status: "PENDING", //PENDING, IN PROGESS, COMPLETED
-      datestart: "2023-11-08 22:00:00",
-      dateend: "2023-12-08 22:00:00",
-      id: "qrewre4354r",
-      user: "albertsube",
-      createdAt: "2023-11-10 22:03:00",
-      modifiedAt: "2023-11-10 22:05:00",
-      deletedAt: null,
-    },
-    {
-      title: "Preparar las maletas",
-      description: "El viaje hacia marte va a durar unos cuantos meses, preparar ropa de verano e invierno",
-      status: "PENDING", //PENDING, IN PROGESS, COMPLETED
-      datestart: "2023-11-08 22:00:00",
-      dateend: "2023-12-08 22:00:00",
-      id: "fhtrw687hfs",
-      user: "albertsube",
-      createdAt: "2023-11-10 22:03:00",
-      modifiedAt: "2023-11-10 22:05:00",
-      deletedAt: null,
-    },
-  ]
+const tasks = require('../mockup_data/tasks')
 
 router.get('/', (req, res) => {
     console.log('query params', req.query)
