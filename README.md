@@ -1,6 +1,6 @@
 # Endpoints
 
-- GET/tasks : Get a incomplite task list
+- GET/tasks : Get a incomplete task list
 - GET/tasks/id: Get a detail of a task
 - PUT/tasks/id: Update a task
 - DELETE/task/id: Remove a task
