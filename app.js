@@ -1,28 +1,33 @@
-const express = require('express');
+import express from 'express';
+import testMiddleWare from "./middleware/test.middleware.js";
+import tasksRouter from './routes/tasks.js';
+import usersRouter from './routes/users.js';
+
 const app = express();
 const port = 3000;
 
 app.use(express.json());
-
-// Task routes
-const tasksRouter = require('./routes/tasks'); 
-app.use('/tasks', tasksRouter);
-
-// User routes
-const usersRouter = require('./routes/users'); 
-app.use('/users', usersRouter);
+app.use(testMiddleWare.logginCallRoute);
 
 // Home route
 app.get('/', (req, res) => {
-    res.send('Hello wooorld GET request!');
+res.send('Hello wooorld!');
 });
 
-// Message route
-app.get('/message', (req, res) => {
-    res.status(403).json({
-        msg: "user has not access"
-    });
-});
+//Routes
+app.use('/tasks', tasksRouter);
+app.use('/users', usersRouter);
+
+//Errors
+app.use((req, res) => {
+    res.status(404).send("404 - Not Found");
+  });
+
+app.use((err, req, res) => {
+    console.error(err.stack);
+    res.status(500).send("500 - Server Error");
+ });
+
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);

@@ -1,7 +1,7 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
+import users from '../mockup_data/users.js';
 
-const users = require('../mockup_data/users.js');
 
 // GET/user: Get user information
 router.get('/', (req, res) => {
@@ -33,4 +33,4 @@ router.post('/login', (req, res) => {
     }
 });
 
-module.exports = router;
+export default router;

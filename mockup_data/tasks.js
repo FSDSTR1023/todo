@@ -1,8 +1,13 @@
+const statusTypes = {
+    PENDING: "PENDING",
+    IN_PROGRESS: "IN PROGRESS",
+    COMPLETED: "COMPLETED",
+}
 const tasks = [
     {
         title: "Task Title 1",
         description: "Task Description",
-        status: "PENDING", 
+        status: statusTypes.PENDING , 
         datestart: "2023-11-01", 
         dateend: "2023-11-10", 
         id: 1, 
@@ -14,7 +19,7 @@ const tasks = [
     {
         title: "Task Title 2",
         description: "Task Description",
-        status: "COMPLETED", 
+        status: statusTypes.IN_PROGRESS, 
         datestart: "2023-11-01", 
         dateend: "2023-11-10", 
         id: 2, 
@@ -26,7 +31,7 @@ const tasks = [
     {
         title: "Task Title 3",
         description: "Task Description",
-        status: "PENDING", 
+        status: statusTypes.COMPLETED, 
         datestart: "2023-11-01", 
         dateend: "2023-11-10", 
         id: 3, 
@@ -38,7 +43,7 @@ const tasks = [
     {
         title: "Task Title 4",
         description: "Task Description",
-        status: "PENDING", 
+        status: statusTypes.COMPLETED, 
         datestart: "2023-11-01", 
         dateend: "2023-11-10", 
         id: 4, 
@@ -49,4 +54,4 @@ const tasks = [
     },
   ]
 
-  module.exports = tasks
+  export { tasks as default, statusTypes };

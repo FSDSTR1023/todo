@@ -1,37 +1,27 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
+import tasks, { statusTypes }  from "../mockup_data/tasks.js";
+import { taskBodyValidation } from "../middleware/task.middleware.js";
 
-const tasks = require("../mockup_data/tasks.js")
 
-// GET /tasks: Get a complete task list
-router.get('/', (req, res) => {
-  console.log("unique task", req.params);
-  res.json(tasks);
+// GET /tasks/: Get a detail of incompleted tasks
+router.get("/", (req, res) => {
+  res.json(tasks.filter((task) => task.status !== statusTypes.COMPLETED));
 });
 
 // GET /tasks/:id: Get a detail of a task
 router.get('/:id', (req, res) => {
-    console.log("unique task", req.params);
-    res.json(tasks[1]);
+    // console.log("unique task", req.params);
+    // res.json(tasks[1]);
+    const task = tasks.find((task) => task.id === req.params.id);
+    if (!task) res.status(404).send({ msg: "Task not found" });
+    res.json(task);
 });
 
 // PUT /tasks/:id: Update a task
-router.put('/:id', (req, res) => {
-  const id = parseInt(req.params.id);
-  const taskIndex = tasks.findIndex(task => task.id === id);
-
-  if (taskIndex > -1) {
-    tasks[taskIndex].title = "different title";
-    tasks[taskIndex].description = "different description";
-    tasks[taskIndex].user = "different name";
-
-    res.json({ 
-      msg: `Task with id ${id} updated successfully`, 
-      updatedTask: tasks[taskIndex] 
-  });
-} else {
-    res.status(404).json({ msg: `Task with id ${id} not found` });
-}
+router.put("/edit/:id", taskBodyValidation, (req, res) => {
+  console.log("update task", req.query, req.params, req.body);
+  res.json({ msg: "task updated succesfully" });
 });
 
 // DELETE /tasks/:id: Remove a task
@@ -51,23 +41,11 @@ router.delete('/:id', (req, res) => {
 
 // POST /tasks/: Create a new task
 router.post('/', (req, res) => {
-    console.log("posted new task", req.query, req.params, req.body);
-    const newTask = {
-      id: tasks.length + 1, // This is a simple way to generate a unique ID
-      title: "Posted title",
-      description: "new posted description",
-      status: "PENDING",
-      datestart: req.body.datestart,
-      dateend: req.body.dateend,
-      user: req.body.user,
-      createdAt: new Date().toISOString(),
-      modifiedAt: null,
-      deletedAt: null
-  };
-    // Add the new task to the tasks array
-    tasks.push(newTask);
-    // Respond with the newly created task
-    res.json({ msg: "New task posted successfully", newTask });
+  console.log("posted new task", req.query, req.params, req.body);
+  const newTask = req.body;
+  newTask.id = Math.random().toString(36);
+  lastareas.push(newTask);
+  res.status(201).json(newTask);
 });
 
 // PATCH /tasks/:id: Mark as completed
@@ -90,4 +68,4 @@ router.patch('/:id', (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;
