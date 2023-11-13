@@ -1,17 +1,24 @@
-const express = require('express')
-const router = express.Router()
+import { Router } from 'express'
+import tasks, {status} from '../data/tasks.data.js'
+import newDate from '../helpers/date.js'
+import { taskBodyValidation } from '../middleware/task.middleware.js'
 
-let tasks = require('../mockup_data/tasks')
+const router = Router()
 
 // GET/tasks : Get a incomplete task list
 router.get('/', (req, res) => {
-    res.json(tasks.filter( task => task.status !== 'COMPLETED' && task.deletedAt === null ))
+    res.json(tasks.filter( task => task.status !== status.COMPLETED && task.deletedAt === null ))
 })
   
 // GET/tasks/id: Get a detail of a task
 router.get('/:id', (req,res) => {
+
   const { id } = req.params
-  res.json(tasks.find( task => task.id === id ))
+  const task = tasks.find( task => task.id === id )
+
+  if(!task) res.status(404).send({msg: 'Task not found'})
+
+  res.json(task)
 })
 
 // PUT/tasks/id: Update a task
@@ -21,7 +28,7 @@ router.put('/:id', (req,res) => {
   const oldTask = tasks.find( task => task.id === id )
   const newTask = { ...oldTask, ...req.body }
 
-  tasks = tasks.map( task => task.id === id ? 
+  tasks = map( task => task.id === id ? 
     newTask
     :
     task
@@ -38,11 +45,9 @@ router.put('/:id', (req,res) => {
 router.delete('/:id', (req,res) => {
 
   const { id } = req.params
-  const currentDate = require('../helpers/date')
-  console.log(currentDate())
 
-  tasks = tasks.map( task => task.id === id ?
-    { ...task, deletedAt: currentDate() }
+  tasks = map( task => task.id === id ?
+    { ...task, deletedAt: newDate() }
     :
     task  
   )
@@ -53,17 +58,17 @@ router.delete('/:id', (req,res) => {
 })
 
 // POST/task/: Create a new task
-router.post('/', (req,res) => {
-  
-  tasks = [ ...tasks, req.body ]
+router.post('/', taskBodyValidation, (req,res) => {
 
-  res.json({
-      msg: 'Task created successfully'
-  })
+  const newTask = req.body
+  newTask.id = Math.random().toString(36)
+  tasks.push(newTask)
+
+  res.status(201).json(newTask)
 })
 
 // PATCH/task/id: Mark as completed
-router.patch('/:id', (req,res) => {
+router.patch('/:id', taskBodyValidation, (req,res) => {
 
   const { id } = req.params
 
@@ -80,4 +85,4 @@ router.patch('/:id', (req,res) => {
 })
 
 
-module.exports = router
+export default router

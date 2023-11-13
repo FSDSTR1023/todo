@@ -16,4 +16,4 @@ const newDate = () => {
 
 }
 
-module.exports = newDate
+export default newDate
