@@ -1,12 +1,9 @@
-const express = require('express')
-const router = express.Router()
+import { Router } from "express";
+import users from "../data/users.data.js";
+const router = Router();
 
 router.get('/',(req,res)=>{
-    res.json({
-        firstname:"Enrique García",
-        lastname: "García",
-        email: "test@example.com"
-    })
+    res.json(users)
 })
 
 router.post('/login',(req,res)=>{
@@ -18,4 +15,4 @@ router.post('/login',(req,res)=>{
     }
 })
 
-module.exports = router
+export default router;

@@ -1,56 +1,23 @@
-const express = require('express')
-const router = express.Router()
-
-const tasks = [
-    {
-        title: "Preparar las maletas",
-        description:  "El viaje a marte va a durar unos cuantos meses, preparar ropa de verano e invierno",
-        status: "PENDING", //PENDING, IN PROGRESS, COMPLETED
-        datestart: "2023-11-08 22:00:00",
-        dateend: "2023-12-08 22:00:00",
-        id: "aaa12371232131",
-        user: "egarcia",
-        createdAt: "2023-11-10 20:03:00",
-        modifiedAt : "2023-11-08 22:05:00",
-        deletedAt: null
-    },
-    {
-        title: "Preparar las maletas",
-        description:  "El viaje a marte va a durar unos cuantos meses, preparar ropa de verano e invierno",
-        status: "PENDING", //PENDING, IN PROGRESS, COMPLETED
-        datestart: "2023-11-08 22:00:00",
-        dateend: "2023-12-08 22:00:00",
-        id: "87y112312311231",
-        user: "egarcia",
-        createdAt: "2023-11-10 20:03:00",
-        modifiedAt : "2023-11-08 22:05:00",
-        deletedAt: null
-    }
-]
+import { Router } from "express";
+import tasksdata, {statuses} from "../data/tasks.data.js";
+const router = Router();
 
 router.get('/', (req, res) => {
-    console.log("query params", req.query)
-    res.json(tasks)
-})
+    res.json(tasksdata.filter((task) => task.status !== statuses.completed))
+});
 
 router.get('/:id', (req,res)=> {
-    console.log("unique task",req.params, req.query, res.statusCode)
-    const statusCode = parseInt(res.statusCode);
-    switch (statusCode){
-        case 200: res.json(tasks[0])
-        case 403: res.json({msg: "Forbidden"})
-        case 404: res.json({msg: "Task not found"})
-    }
-})
+    const task = tasksdata.find((task) => task.id === req.params.id);
+    if (!task) res.status(404).send({msg: "Task not found}"});
+    res.json(task);
+    });
 
 router.post('/', (req,res)=>{
-    console.log("create task",req.query,req.params,req.body)
-    switch (statusCode){
-        case 201: res.json({msg: "task created succesfully"})
-        case 400: res.json({msg: "You missed some parameters: parameter1, parameter2, ..."})
-    }
-    
-})
+    const newTask = req.body;
+    newTask.id = Math.random().toString(36);
+    tasksdata.push(newTask);
+    res.status(201).json(newTask);
+});
 
 router.put('/:id', (req,res)=>{
     console.log("update task",req.query,req.params,req.body)
@@ -81,4 +48,4 @@ router.patch('/:id', (req,res)=> {
     }
 })
 
-module.exports = router
+export default router;
