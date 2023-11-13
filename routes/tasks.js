@@ -34,22 +34,51 @@ router.get('/', (req, res) => {
 })
 
 router.get('/:id', (req,res)=> {
-    console.log("unique task",req.params, req.query)
-    res.json(tasks[0])
+    console.log("unique task",req.params, req.query, res.statusCode)
+    const statusCode = parseInt(res.statusCode);
+    switch (statusCode){
+        case 200: res.json(tasks[0])
+        case 403: res.json({msg: "Forbidden"})
+        case 404: res.json({msg: "Task not found"})
+    }
 })
 
 router.post('/', (req,res)=>{
     console.log("create task",req.query,req.params,req.body)
-    res.json({msg: "task created succesfully"})
+    switch (statusCode){
+        case 201: res.json({msg: "task created succesfully"})
+        case 400: res.json({msg: "You missed some parameters: parameter1, parameter2, ..."})
+    }
+    
 })
 
 router.put('/:id', (req,res)=>{
     console.log("update task",req.query,req.params,req.body)
-    res.json({msg: "task updated succesfully"})
+    const statusCode = parseInt(res.statusCode);
+    switch (statusCode){
+        case 200: res.json({msg: "task updated succesfully"})
+        case 400: res.json({msg: "You missed some parameters: parameter1, parameter2, ..."})
+        case 403: res.json({msg: "Forbidden"})
+        case 404: res.json({msg: "Task not found"})
+    }
 })
 
 router.delete('/:id', (req,res)=> {
-    res.json({msg: req.params.id+" has been deleted"})
+    const statusCode = parseInt(res.statusCode);
+    switch (statusCode){
+        case 200: res.json({msg: req.params.id+" has been deleted"})
+        case 403: res.json({msg: "Forbidden"})
+        case 404: res.json({msg: "Task not found"})
+    }
+})
+
+router.patch('/:id', (req,res)=> {
+    const statusCode = parseInt(res.statusCode);
+    switch (statusCode){
+        case 200: res.json({msg: "Task marked as completed"})
+        case 403: res.json({msg: "Forbidden"})
+        case 404: res.json({msg: "Task not found"})
+    }
 })
 
 module.exports = router
