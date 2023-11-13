@@ -1,15 +1,26 @@
-const express = require('express')
-const app = express()
-const port = 3000
+import express from "express";
+import testMiddleware from "./middleware/test.middleware.js";
+import tasks from "./routes/tasks.js";
+import users from "./routes/users.js";
 
-app.use(express.json())
+const app = express();
+const port = 3000;
 
-const tasks = require('./routes/tasks')
-app.use('/tasks', tasks)
+app.use(testMiddleware.logginCallRoute);
+app.use(express.json());
 
-const users = require('./routes/users')
-app.use('/users', users)
+app.use("/tasks", tasks);
+app.use("/users", users);
+
+app.use((req, res) => {
+  res.status(404).send("404 - Not Found");
+});
+
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send("500 - Server Error");
+});
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+  console.log(`Example app listening on port ${port}`);
+});
