@@ -1,19 +1,13 @@
-import { UserEntity } from "./user.entity";
-
-enum Status {
-    PENDING = "PENDING",
-    IN_PROGRESS = "IN PROGRESS",
-    COMPLETED = "COMPLETED",
-}
+import { Status } from "../interfaces/interfaces";
 
 interface Props {
     title: string;
     description: string;
     status: Status;
-    dateStart: EpochTimeStamp;
-    dateEnd: EpochTimeStamp;
+    dateStart?: EpochTimeStamp | null;
+    dateEnd?: EpochTimeStamp | null;
     id: string;
-    user: UserEntity;
+    user: string;
     createdAt: EpochTimeStamp;
     modifiedAt: EpochTimeStamp;
     deletedAt?: EpochTimeStamp | null;
@@ -24,16 +18,15 @@ export class TaskEntity {
     public title: string;
     public description: string;
     public status: Status;
-    public dateStart: EpochTimeStamp;
-    public dateEnd: EpochTimeStamp;
+    dateStart?: EpochTimeStamp | null;
+    dateEnd?: EpochTimeStamp | null;
     public id: string;
-    public user: UserEntity;
+    public user: string;
     public createdAt: EpochTimeStamp;
     public modifiedAt: EpochTimeStamp;
     public deletedAt?: EpochTimeStamp | null;
 
     constructor(props: Props) {
-        this.validateProps(props);
 
         const {
             title,
@@ -58,33 +51,6 @@ export class TaskEntity {
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
         this.deletedAt = deletedAt;
-    }
-
-    validateProps(props: Props) {
-        const {
-            title,
-            description,
-            status,
-            dateStart,
-            dateEnd,
-            id,
-            user,
-            createdAt,
-            modifiedAt
-        } = props;
-
-        if (!title
-            || !description
-            || !status
-            || !dateStart
-            || !dateEnd
-            || !id
-            || !user
-            || !createdAt
-            || !modifiedAt
-        ) {
-            throw new Error('Creating task: Not completed info')
-        }
     }
 
     get isDeleted() {

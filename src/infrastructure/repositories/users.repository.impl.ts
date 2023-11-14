@@ -1,6 +1,6 @@
 import { UsersDatasource } from "../../domain/datasources/users.datasource";
 import { UserEntity } from "../../domain/entities/user.entity";
-import { infoCreateUser, LoginProps } from "../../domain/interfaces/interfaces";
+import { InfoCreateUser, LoginProps } from "../../domain/interfaces/interfaces";
 import { UsersRepository } from "../../domain/repositories/users.repository";
 
 export class UsersRepositoryImpl extends UsersRepository {
@@ -12,7 +12,7 @@ export class UsersRepositoryImpl extends UsersRepository {
         this.datasource = datasource;
     }
 
-    createUser(userInfo: infoCreateUser): Promise<UserEntity> {
+    createUser(userInfo: InfoCreateUser): Promise<UserEntity> {
         return this.datasource.createUser(userInfo)
     }
     getUser(): Promise<UserEntity> {

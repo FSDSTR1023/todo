@@ -1,22 +1,25 @@
 import type { Request, Response } from 'express';
-import { UsersRepositoryImpl } from '../../infrastructure/repositories/users.repository.impl';
-import { UsersDatasourceImpl } from '../../infrastructure/datasources/users.datasource.impl';
 import { UsersRepository } from '../../domain/repositories/users.repository';
 
 export class UsersControllers {
 
-    private readonly usersRerpository: UsersRepository;
+    private readonly usersRepository: UsersRepository;
 
+    // Hago una inyección de dependencias directamente desde el Domain y no desde infrastructure (implementación) por si en algún momento quiero cambiar la base de datos, por ejempolo.
     constructor(usersRerpository: UsersRepository) {
-        this.usersRerpository = usersRerpository;
+        this.usersRepository = usersRerpository;
     }
 
     public createUser = async (req: Request, res: Response) => {
-        const newUser = await this.usersRerpository.createUser({
-            name: "Jordi",
-            surname: "Galobart",
-            email: "jordi@mail.com",
-            password: "1234",
+
+        // todo: implementar validaciones para asegurarme que en este punto tengo la info correcta en el body
+        const { name, surname, email, password } = req.body;
+
+        const newUser = await this.usersRepository.createUser({
+            name,
+            surname,
+            email,
+            password,
         });
 
         res.status(201).json({

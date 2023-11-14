@@ -1,5 +1,6 @@
 import { Router } from 'express'
 import { UsersRoutes } from './users/routes';
+import { TaskRoutes } from './tasks/routes';
 
 
 export class AppRoutes {
@@ -9,7 +10,8 @@ export class AppRoutes {
 
         const router = Router();
 
-        router.use('/user/create', UsersRoutes.routes);
+        router.use('/users', UsersRoutes.routes);
+        router.use('/tasks', TaskRoutes.routes);
 
         return router;
     }
