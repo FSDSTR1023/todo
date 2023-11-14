@@ -20,7 +20,8 @@ router.put('/:id', taskBodyValidation, (req,res)=> {
 
 
 router.delete('/:id', (req,res)=> {
-  res.json({msg: req.params.id+" has been deleted"})
+  const deletedTasks = tasks.find((task) => task.id === req.params.id)
+  res.json({msg: req.params.id+" has been deleted", deleted_task: deletedTasks})
 })
 
 router.post('/', taskBodyValidation, (req, res) => {
