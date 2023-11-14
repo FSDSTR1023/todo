@@ -1,12 +1,12 @@
 import express from "express";
-import testMiddleware from "./middleware/test.middleware.js";
+import loggingMiddleware from "./middleware/logging.middleware.js";
 import tasks from "./routes/tasks.js";
 import users from "./routes/users.js";
 
 const app = express();
 const port = 3000;
 
-app.use(testMiddleware.logginCallRoute);
+app.use(loggingMiddleware.logginCallRoute);
 app.use(express.json());
 
 app.use("/tasks", tasks);
