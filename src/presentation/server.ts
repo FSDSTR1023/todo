@@ -1,5 +1,6 @@
 import express, { Router } from "express";
 
+
 interface StartOptions {
     port: number | string;
     routes: Router;
@@ -21,6 +22,6 @@ export class Server {
         this.app.use(options.routes);
 
         // Server listening
-        this.app.listen(options.port, () => console.log(`Server listening on port: ${options.port}`))
+        this.app.listen(options.port, () => console.log(`(ctrl + click) 👉 http://localhost:${options.port}`));
     }
 }

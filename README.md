@@ -9,14 +9,13 @@
     Get an incompleted task list
   </summary>
   
-  ### Parameters
+### Parameters 
 
   > | name      |  type     | data type               | description     |
   > |-----------|-----------|-------------------------|-----------------|
   > | None      |  N/A      | N/A                     | N/A             |
 
-  
-  ### Responses
+### Responses
 
   > | http code     | content-type                      | response              |
   > |---------------|-----------------------------------|-----------------------|
@@ -30,14 +29,14 @@
     <code>/tasks/:id</code> 
     Get a detail of a task
   </summary>
-  
-  ### Parameters
+
+### Parameters
 
   > | name      |  type     | data type  | description     |
   > |-----------|-----------|------------|-----------------|
   > | id        |  required | string     | ID of the task  |
 
-  ### Responses
+### Responses
 
   > | http code     | content-type                      | response                  |
   > |---------------|-----------------------------------|---------------------------|

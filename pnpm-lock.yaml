@@ -11,12 +11,20 @@ dependencies:
   '@types/node':
     specifier: ^20.9.0
     version: 20.9.0
+  env-var:
+    specifier: ^7.4.1
+    version: 7.4.1
   express:
     specifier: ^4.18.2
     version: 4.18.2
   ts-node-dev:
     specifier: ^2.0.0
     version: 2.0.0(@types/node@20.9.0)(typescript@5.2.2)
+
+devDependencies:
+  dotenv:
+    specifier: ^16.3.1
+    version: 16.3.1
 
 packages:
 
@@ -313,6 +321,11 @@ packages:
     engines: {node: '>=0.3.1'}
     dev: false
 
+  /dotenv@16.3.1:
+    resolution: {integrity: sha512-IPzF4w4/Rd94bA9imS68tZBaYyBWSCE47V1RGuMrB94iyTOIEwRmVL2x/4An+6mETpLrKJ5hQkB8W4kFAadeIQ==}
+    engines: {node: '>=12'}
+    dev: true
+
   /dynamic-dedupe@0.3.0:
     resolution: {integrity: sha512-ssuANeD+z97meYOqd50e04Ze5qp4bPqo8cCkI4TRjZkzAUgIDTrXV1R8QCdINpiI+hw14+rYazvTRdQrz0/rFQ==}
     dependencies:
@@ -326,6 +339,11 @@ packages:
   /encodeurl@1.0.2:
     resolution: {integrity: sha512-TPJXq8JqFaVYm2CWmPvnP2Iyo4ZSM7/QKcSmuMLDObfpH5fi7RUGmd/rTDf+rut/saiDiQEeVTNgAmJEdAOx0w==}
     engines: {node: '>= 0.8'}
+    dev: false
+
+  /env-var@7.4.1:
+    resolution: {integrity: sha512-H8Ga2SbXTQwt6MKEawWSvmxoH1+J6bnAXkuyE7eDvbGmrhIL2i+XGjzGM3DFHcJu8GY1zY9/AnBJY8uGQYPHiw==}
+    engines: {node: '>=10'}
     dev: false
 
   /escape-html@1.0.3:
