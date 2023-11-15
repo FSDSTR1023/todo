@@ -1,12 +1,15 @@
+import { TaskEntity } from "./task.entity";
+
 interface Props {
     name: string,
     surname: string,
     email: string,
     password: string,
     id: string;
-    createdAt: EpochTimeStamp,
-    modifiedAt: EpochTimeStamp,
-    deletedAt?: EpochTimeStamp | null,
+    createdAt: Date,
+    modifiedAt: Date,
+    deletedAt?: Date,
+    tasks?: TaskEntity[]
 }
 
 export class UserEntity {
@@ -16,9 +19,10 @@ export class UserEntity {
     public email: string;
     public password: string;
     public id: string;
-    public createdAt: EpochTimeStamp;
-    public modifiedAt: EpochTimeStamp;
-    public deletedAt?: EpochTimeStamp | null;
+    public createdAt: Date;
+    public modifiedAt: Date;
+    public deletedAt?: Date;
+    public tasks?: TaskEntity[];
 
     constructor(props: Props) {
         this.validateProps(props);
@@ -30,7 +34,9 @@ export class UserEntity {
             email,
             password,
             createdAt,
-            modifiedAt
+            modifiedAt,
+            deletedAt,
+            tasks = []
         } = props;
 
         this.id = id;
@@ -40,6 +46,8 @@ export class UserEntity {
         this.password = password;
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
+        this.deletedAt = deletedAt;
+        this.tasks = tasks;
     }
 
     validateProps(props: Props) {
@@ -50,7 +58,8 @@ export class UserEntity {
             email,
             password,
             createdAt,
-            modifiedAt
+            modifiedAt,
+            tasks = []
         } = props;
 
         if (
@@ -61,6 +70,7 @@ export class UserEntity {
             || !password
             || !createdAt
             || !modifiedAt
+            || !tasks
         ) {
             throw Error('Create user: Not complete info')
         }
