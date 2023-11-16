@@ -1,7 +1,18 @@
-import { Request, Response, Router } from "express";
+import { Router } from "express";
+import { TasksDatasourcesImpl } from "../../infrastructure/datasources/tasks.datasources.impl";
+import { TasksRepositoryImpl } from "../../infrastructure/repositories/tasks.repository.impl";
+import { TasksControllers } from "./controllers";
 
-const router = Router();
+export class TaskRoutes {
+    static get routes(): Router {
+        const route = Router();
 
-router.get('/', (req: Request, res: Response) => res.json({ msg: 'habemus server' }));
+        const datasource = new TasksDatasourcesImpl();
+        const repository = new TasksRepositoryImpl(datasource);
 
-export default router;
+        const tasksControllers = new TasksControllers(repository);
+
+        route.post('/', tasksControllers.createTask)
+        return route;
+    }
+}

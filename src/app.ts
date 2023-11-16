@@ -1,22 +1,20 @@
 import { Server } from "./presentation/server";
-import router from "./presentation/tasks/routes";
-
-const port = process.env.PORT || 3001;
-
-async function main() {
-    const server = new Server();
-
-    await server.start({
-        port: port,
-        routes: router,
-    });
-
-    console.log(`(ctrl + click) 👉 http://localhost:${port}`);
-
-}
+import { envs } from './config/envs'
+import { AppRoutes } from "./presentation/routes";
+import { MongoDatabase } from "./db/mongo/init";
 
 (async () => await main())();
 
+async function main() {
+    const server = new Server()
 
+    await MongoDatabase.connect({
+        mongoUrl: envs.MONGO_URL,
+        dbName: envs.MONGO_DB_NAME,
+    })
 
-
+    await server.start({
+        port: envs.PORT,
+        routes: AppRoutes.routes,
+    });
+}
