@@ -15,8 +15,8 @@ export class UsersRepositoryImpl extends UsersRepository {
     createUser(userInfo: InfoCreateUser): Promise<UserEntity> {
         return this.datasource.createUser(userInfo)
     }
-    getUser(): Promise<UserEntity> {
-        throw new Error("Method not implemented.");
+    getUser(id: string): Promise<UserEntity> {
+        return this.datasource.getUser(id);
     }
     userLogin(loginProps: LoginProps): Promise<UserEntity> {
         throw new Error("Method not implemented.");

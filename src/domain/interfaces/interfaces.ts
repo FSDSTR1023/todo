@@ -24,3 +24,10 @@ export interface InfoCreateTask {
     dateEnd?: EpochTimeStamp | null;
     user: string,
 }
+
+export interface JwtPayload {
+    id: string,
+    email: string,
+    iat: number,
+    exp: number
+}

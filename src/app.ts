@@ -10,7 +10,7 @@ async function main() {
 
     await MongoDatabase.connect({
         mongoUrl: envs.MONGO_URL,
-        dbName: envs.MONGO_DB_NAME
+        dbName: envs.MONGO_DB_NAME,
     })
 
     await server.start({

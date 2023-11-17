@@ -14,7 +14,8 @@ export class UsersRoutes {
 
         const usersControllers = new UsersControllers(repository);
 
-        router.post('/', usersControllers.createUser)
+        router.post('/', usersControllers.create)
+        router.get('/', usersControllers.getInfo)
         return router
     }
 }

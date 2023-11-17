@@ -1,3 +1,4 @@
+import { BcryptAdapter } from "../../config/bcrypt.adapter";
 import { UserSchema } from "../../db/mongo/models/userSchema";
 import { UsersDatasource } from "../../domain/datasources/users.datasource";
 import { UserEntity } from "../../domain/entities/user.entity";
@@ -7,13 +8,24 @@ import { UserMapper } from "../mappers/user.mapper";
 export class MongoUserDatasourceImpl extends UsersDatasource {
     async createUser(userInfo: InfoCreateUser): Promise<UserEntity> {
         const newUser = await UserSchema.create(userInfo);
+        newUser.password = BcryptAdapter.toHash(newUser.password);
         await newUser.save();
         const newUserEntity = UserMapper.fromObject(newUser);
         return newUserEntity;
     }
-    getUser(): Promise<UserEntity> {
-        throw new Error("Method not implemented.");
+    async getUser(id: string): Promise<UserEntity> {
+
+        const user = await UserSchema.findById(id);
+        if (!user) {
+            throw new Error('getUser: No hay usuario');
+        }
+
+        const userEntity = UserMapper.fromObject(user);
+
+        return userEntity;
+
     }
+
     userLogin(loginProps: LoginProps): Promise<UserEntity> {
         throw new Error("Method not implemented.");
     }
