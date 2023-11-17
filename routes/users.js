@@ -5,11 +5,10 @@ import users from '../mockup_data/users.js';
 
 // GET/user: Get user information
 router.get('/', (req, res) => {
-    console.log("unique task", req.params);
     res.json(users);
 });
 
-// GET /tasks/:id: Get a detail of a task
+// GET /user/:id: Get details of a user
 router.get('/:id', (req, res) => {
     const id = parseInt(req.params.id);
     const user = users.find(user => user.id === id);

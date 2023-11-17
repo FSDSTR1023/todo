@@ -4,12 +4,12 @@ import tasks, { statusTypes }  from "../mockup_data/tasks.js";
 import { taskBodyValidation } from "../middleware/task.middleware.js";
 
 
-// GET /tasks/: Get a detail of incompleted tasks
+// GET /tasks/: Get incompleted tasks
 router.get("/", (req, res) => {
   res.json(tasks.filter((task) => task.status !== statusTypes.COMPLETED));
 });
 
-// GET /tasks/:id: Get a detail of a task
+// GET /tasks/:id: Get details of a task
 router.get('/:id', (req, res) => {
     // console.log("unique task", req.params);
     // res.json(tasks[1]);
