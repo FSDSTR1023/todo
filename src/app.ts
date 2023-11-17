@@ -10,7 +10,7 @@ async function main() {
 
     await MongoDatabase.connect({
         mongoUrl: envs.MONGO_URL,
-        dbName: "Task-db"
+        dbName: envs.MONGO_DB_NAME
     })
 
     await server.start({
