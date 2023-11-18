@@ -1,4 +1,5 @@
 import express, { json } from 'express'
+import cors from 'cors'
 import tasks from './routes/tasks.js'
 import users from './routes/users.js'
 import testMiddleWare from './middleware/test.middleware.js'
@@ -6,6 +7,7 @@ import testMiddleWare from './middleware/test.middleware.js'
 const app = express()
 const port = 3000
 
+app.use(cors())
 app.use(json())
 app.use(testMiddleWare.logginCallRoute)
 app.use('/tasks', tasks)
