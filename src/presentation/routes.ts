@@ -10,8 +10,8 @@ export class AppRoutes {
 
         const router = Router();
 
-        router.use('/users', UsersRoutes.routes);
-        router.use('/tasks', TaskRoutes.routes);
+        router.use('/user', UsersRoutes.routes);
+        router.use('/task', TaskRoutes.routes);
 
         return router;
     }

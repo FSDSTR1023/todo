@@ -19,7 +19,7 @@ export class UsersRepositoryImpl extends UsersRepository {
         return this.datasource.getUser(id);
     }
     userLogin(loginProps: LoginProps): Promise<UserEntity> {
-        throw new Error("Method not implemented.");
+        return this.datasource.userLogin(loginProps);
     }
 
 }

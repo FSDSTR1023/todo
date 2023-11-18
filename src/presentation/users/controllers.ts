@@ -3,6 +3,8 @@ import { UsersRepository } from '../../domain/repositories/users.repository';
 import { JwtAdapter } from '../../config/jwt.adapter';
 import { envs } from '../../config/envs';
 import { Secret } from 'jsonwebtoken';
+import { UserSchema } from '../../db/mongo/models/userSchema';
+import { BcryptAdapter } from '../../config/bcrypt.adapter';
 
 export class UsersControllers {
 
@@ -67,6 +69,29 @@ export class UsersControllers {
             ok: true,
             msg: "Your info",
             user
+        })
+    }
+
+    public login = async (req: Request, res: Response) => {
+        // todo: primero validar si el usuario existe, se hará mediando middlewares
+
+        const { email, password } = req.body;
+
+        const { password: passwordResponse, ...userResponse } = await this.usersRepository.userLogin({ email, password });
+
+        const jwt = new JwtAdapter()
+        const payload = {
+            id: userResponse.id,
+            email: userResponse.email
+        }
+        const token = jwt.genToken(payload, '8h');
+
+
+        res.status(200).json({
+            ok: true,
+            msg: "you are logged",
+            user: userResponse,
+            token
         })
     }
 }

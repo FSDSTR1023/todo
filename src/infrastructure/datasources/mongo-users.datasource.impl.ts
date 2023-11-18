@@ -26,8 +26,23 @@ export class MongoUserDatasourceImpl extends UsersDatasource {
 
     }
 
-    userLogin(loginProps: LoginProps): Promise<UserEntity> {
-        throw new Error("Method not implemented.");
+    async userLogin(loginProps: LoginProps): Promise<UserEntity> {
+
+        const { email, password } = loginProps;
+
+        //! Ya que estoy seguro que el usuario existe, autentifico al usuario en auth.services
+
+        const user = await UserSchema.findOne({ email });
+        if (!user) throw Error('MongoUserDatasourceImpl.userLogin: Usuario o contraseña no válidos');
+
+        //! validar la contraseña
+        const isValidatedPasword = BcryptAdapter.compare(password, user.password)
+        if (!isValidatedPasword) throw Error('MongoUserDatasourceImpl.userLogin: Usuario o contraseña no válidos');
+        //! hasta aquí en el auth.services
+
+        const userEntity = UserMapper.fromObject(user);
+
+        return userEntity;
     }
 
 }

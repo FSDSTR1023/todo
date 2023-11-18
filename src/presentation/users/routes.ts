@@ -16,6 +16,7 @@ export class UsersRoutes {
 
         router.post('/', usersControllers.create)
         router.get('/', usersControllers.getInfo)
+        router.get('/login', usersControllers.login)
         return router
     }
 }
