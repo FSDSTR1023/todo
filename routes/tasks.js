@@ -22,17 +22,14 @@ router.get('/:id', (req,res) => {
 })
 
 // PUT/tasks/id: Update a task
-router.put('/:id', (req,res) => {
+router.put('/:id', taskBodyValidation, (req,res) => {
   
   const { id } = req.params
-  const oldTask = tasks.find( task => task.id === id )
-  const newTask = { ...oldTask, ...req.body }
+  const oldTaskIndex = tasks.findIndex( task => task.id === id )
+  const oldTask = tasks[oldTaskIndex]
+  const newTask = { ...oldTask, ...req.body, id: id }
 
-  tasks = map( task => task.id === id ? 
-    newTask
-    :
-    task
-  )
+  tasks.splice(oldTaskIndex, 1, newTask)
 
   res.json({
       msg: 'task updated successfully',
