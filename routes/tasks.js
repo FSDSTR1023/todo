@@ -45,8 +45,6 @@ router.delete('/:id', (req,res) => {
   const oldTaskIndex = tasks.findIndex( task => task.id === id )
   const oldTask = tasks[oldTaskIndex]
   const newTask = { ...oldTask, deletedAt: newDate() }
-
-  tasks.splice(oldTaskIndex, 1, newTask)
   
   tasks.splice(oldTaskIndex, 1, newTask)
 
@@ -69,12 +67,11 @@ router.post('/', taskBodyValidation, (req,res) => {
 router.patch('/:id', taskBodyValidation, (req,res) => {
 
   const { id } = req.params
-
-  tasks = tasks.map( task => task.id === id ?
-      { ...task, status: "COMPLETED" }
-      :
-      task
-  )
+  const oldTaskIndex = tasks.findIndex( task => task.id === id )
+  const oldTask = tasks[oldTaskIndex]
+  const newTask = { ...oldTask, status: status.COMPLETED }
+  
+  tasks.splice(oldTaskIndex, 1, newTask)
 
   res.json({
     msg: `Task ${id} completed successfully`
