@@ -42,12 +42,13 @@ router.put('/:id', taskBodyValidation, (req,res) => {
 router.delete('/:id', (req,res) => {
 
   const { id } = req.params
+  const oldTaskIndex = tasks.findIndex( task => task.id === id )
+  const oldTask = tasks[oldTaskIndex]
+  const newTask = { ...oldTask, deletedAt: newDate() }
 
-  tasks = map( task => task.id === id ?
-    { ...task, deletedAt: newDate() }
-    :
-    task  
-  )
+  tasks.splice(oldTaskIndex, 1, newTask)
+  
+  tasks.splice(oldTaskIndex, 1, newTask)
 
   res.json({
       msg: "Task " + id + " has been deleted"
