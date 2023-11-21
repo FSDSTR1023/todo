@@ -4,4 +4,5 @@ export const taskBodyValidation = (req,res,next) => {
         res.status(400).send({msg: "Bad request"})
         return
     }
+    next()
 }
