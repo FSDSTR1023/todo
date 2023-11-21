@@ -25,7 +25,9 @@ router.put('/:id',(req, res)=>{
 router.delete('/:id', (req, res)=>{
     res.jason({msg: req.params.id+" has been deleted"})
 })
-
+router.patch('/:id', (req, res) => {
+    res.json({ msg: 'Task marked as completed' });
+  });
 
 
 module.exports = router

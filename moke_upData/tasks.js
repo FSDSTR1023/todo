@@ -1,8 +1,8 @@
-const tasks = (
+const tasks = [
     {
 
-       title: "Preparar las maletas",
-       description: "El viaje a Marte va a durar unos cuantos meses, preparar ropa de verano e invierno",
+       title: "Preparar comida",
+       description: "Necesito preparar comida para el viaje",
        status: "PENDIN", //PENDING IN PROGRESS, COMPLETED
        datestart: "2023-11-08 22:00:00",
        dateen: "2023-12-08 22:00:00",
@@ -16,18 +16,20 @@ const tasks = (
 
    },
    {
-       title: "Preparar las maletas",
-       description: "El viaje a Marte va a durar unos cuantos meses, preparar ropa de verano e invierno",
+       title: "Planchando ropa",
+       description: "Necesito que la ropa esté planchada",
        status: "PENDIN", //PENDING IN PROGRESS, COMPLETED
        datestart: "2023-11-08 22:00:00",
        dateen: "2023-12-08 22:00:00",
        id: "odjflk45454542",
-       user: "juanita",
-       createdAt: new Date(),
-       modifiedAt: new Date(),
+       user: "jgalobart",
+       createdAt: "2023-11-10 20:03:00",
+       modifiedAt: "2023-11-08 22:05:00",
        deteteAt: null
 
 
    }
 
-    );
+];
+
+module.exports = tasks;
