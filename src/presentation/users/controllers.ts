@@ -1,10 +1,6 @@
 import type { Request, Response } from 'express';
 import { UsersRepository } from '../../domain/repositories/users.repository';
-import { JwtAdapter } from '../../config/jwt.adapter';
-import { envs } from '../../config/envs';
-import { Secret } from 'jsonwebtoken';
-import { UserSchema } from '../../db/mongo/models/userSchema';
-import { BcryptAdapter } from '../../config/bcrypt.adapter';
+import { AuthService } from '../../infrastructure/services/auth.service';
 
 export class UsersControllers {
 
@@ -17,81 +13,81 @@ export class UsersControllers {
 
     public create = async (req: Request, res: Response) => {
 
-        // todo: implementar validaciones para asegurarme que en este punto tengo la info correcta en el body
-        const { name, surname, email, password } = req.body;
+        try {
+            const { name, surname, email, password } = req.body;
+            const { password: passwordResponse, ...userResponse } = await this.usersRepository.createUser({
+                name,
+                surname,
+                email,
+                password,
+            });
+            const payload = { id: userResponse.id }
+            const token = new AuthService().newToken(payload);
 
-        // Refactorizar a auth.services
-        const { password: passwordResponse, ...userResponse } = await this.usersRepository.createUser({
-            name,
-            surname,
-            email,
-            password,
-        });
+            res.status(201).json({
+                ok: true,
+                msn: "User created",
+                user: userResponse,
+                token
+            })
+        } catch (error) {
+            const myError = error as { name: string, message: string };
 
-        const payload = {
-            id: userResponse.id,
-            email: userResponse.email
-        }
-
-        // Añadir como inyección de dependencias en la clase de auth.Services
-        const jwt = new JwtAdapter()
-        const token = jwt.genToken(payload, '8h');
-
-        res.status(201).json({
-            ok: true,
-            msn: "User created",
-            user: userResponse,
-            token
-        })
-    }
-
-    public getInfo = async (req: Request, res: Response) => {
-
-        // todo: antes de llegar aquí validar si me están enviando un jwt
-        // todo: implementar validaciones para asegurarme que en este punto tengo la info correcta en el body
-        const token = req.header('token');
-        const jwt = new JwtAdapter();
-
-        const isCorrectJwt = jwt.verifyToken(token!);
-
-        if (!isCorrectJwt) {
-            return res.status(403).json({
+            res.status(400).json({
                 ok: false,
-                msg: "Unauthorizated"
+                msn: `${myError.name}: ${myError.message}`
             });
         }
 
-        const user = await this.usersRepository.getUser(isCorrectJwt.id)
 
-        console.log({ token })
+    }
 
-        res.status(200).json({
-            ok: true,
-            msg: "Your info",
-            user
-        })
+    public getInfo = async (req: Request, res: Response) => {
+        const id = req.locals.id;
+
+        try {
+            const { password, ...userResponse } = await this.usersRepository.getUser(id);
+
+            res.status(200).json({
+                ok: true,
+                msg: "Your info",
+                user: userResponse
+            })
+        } catch (error) {
+            const myError = error as { name: string, message: string };
+
+            res.status(400).json({
+                ok: false,
+                msn: `${myError.name}: ${myError.message}`
+            });
+        }
+
+
     }
 
     public login = async (req: Request, res: Response) => {
-        // todo: primero validar si el usuario existe, se hará mediando middlewares
-
         const { email, password } = req.body;
 
-        const { password: passwordResponse, ...userResponse } = await this.usersRepository.userLogin({ email, password });
 
-        const jwt = new JwtAdapter()
-        const payload = {
-            id: userResponse.id,
-            email: userResponse.email
+        try {
+            const { password: passwordResponse, ...userResponse } = await this.usersRepository.userLogin({ email, password });
+            const payload = { id: userResponse.id }
+            const token = new AuthService().newToken(payload);
+
+            res.status(200).json({
+                ok: true,
+                msg: "you are logged",
+                user: userResponse,
+                token
+            })
+        } catch (error) {
+            const myError = error as { name: string, message: string };
+
+            res.status(400).json({
+                ok: false,
+                msn: `${myError.name}: ${myError.message}`
+            });
         }
-        const token = jwt.genToken(payload, '8h');
 
-
-        res.status(200).json({
-            ok: true,
-            msg: "you are logged",
-            user: userResponse,
-            token
-        })
     }
 }

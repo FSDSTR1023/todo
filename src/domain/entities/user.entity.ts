@@ -36,7 +36,7 @@ export class UserEntity {
             createdAt,
             modifiedAt,
             deletedAt,
-            tasks = []
+            tasks
         } = props;
 
         this.id = id;
@@ -59,7 +59,7 @@ export class UserEntity {
             password,
             createdAt,
             modifiedAt,
-            tasks = []
+            tasks
         } = props;
 
         if (

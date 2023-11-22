@@ -2,7 +2,7 @@ import { Status } from "../interfaces/interfaces";
 
 interface Props {
     title: string;
-    description: string;
+    description?: string;
     status: Status;
     dateStart?: EpochTimeStamp | null;
     dateEnd?: EpochTimeStamp | null;
@@ -16,10 +16,10 @@ interface Props {
 export class TaskEntity {
 
     public title: string;
-    public description: string;
+    public description?: string;
     public status: Status;
-    dateStart?: EpochTimeStamp | null;
-    dateEnd?: EpochTimeStamp | null;
+    public dateStart?: EpochTimeStamp | null;
+    public dateEnd?: EpochTimeStamp | null;
     public id: string;
     public user: string;
     public createdAt: EpochTimeStamp;

@@ -1,3 +1,4 @@
+import cors from "cors";
 import express, { Router } from "express";
 
 
@@ -20,6 +21,7 @@ export class Server {
 
         // Routes
         this.app.use(options.routes);
+        this.app.use(cors())
 
         // Server listening
         this.app.listen(options.port, () => console.log(`(ctrl + click) 👉 http://localhost:${options.port}`));

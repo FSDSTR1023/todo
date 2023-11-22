@@ -15,17 +15,20 @@ export class TasksRepositoryImpl extends TasksRepository {
     createTask(infoCreateTask: InfoCreateTask): Promise<TaskEntity> {
         return this.datasource.createTask(infoCreateTask);
     }
-    getTasks(): Promise<TaskEntity[]> {
-        return this.datasource.getTasks();
+    getTasks(id: string): Promise<TaskEntity[]> {
+        return this.datasource.getTasks(id);
     }
-    getTaskById(id: string): Promise<TaskEntity> {
-        return this.datasource.getTaskById(id);
+    getTaskById(taskId: string, userId: string): Promise<TaskEntity> {
+        return this.datasource.getTaskById(taskId, userId);
     }
-    updateTask(id: string): Promise<TaskEntity> {
-        return this.datasource.updateTask(id);
+    updateTask(taskId: string, userId: string, payload: InfoCreateTask): Promise<TaskEntity> {
+        return this.datasource.updateTask(taskId, userId, payload);
     }
-    editTask(id: string): Promise<TaskEntity> {
-        return this.datasource.editTask(id);
+    completedTask(taskId: string, userId: string): Promise<TaskEntity> {
+        return this.datasource.completedTask(taskId, userId);
+    }
+    deleteTask(taskId: string, userId: string): Promise<TaskEntity> {
+        return this.datasource.deleteTask(taskId, userId);
     }
 
 }

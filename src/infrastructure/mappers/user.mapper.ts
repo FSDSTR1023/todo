@@ -4,7 +4,7 @@ export class UserMapper {
 
     static fromObject = (userJson: { [key: string]: any }): UserEntity => {
 
-        const { _id: id, email, createdAt, modifiedAt, name, surname, password } = userJson;
+        const { _id: id, email, createdAt, modifiedAt, name, surname, password, tasks } = userJson;
 
         return new UserEntity({
             createdAt,
@@ -13,7 +13,8 @@ export class UserMapper {
             modifiedAt,
             name,
             surname,
-            password
+            password,
+            tasks
         })
 
     }
