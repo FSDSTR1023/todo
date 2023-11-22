@@ -22,7 +22,7 @@ app.use((req, res)=> {
 });
 
 app.use((err, req, res, next)=> {
-  console.err(err.stack);
+  console.log(err.stack);
   res.status(500).json("500 - Server error");
 });
 

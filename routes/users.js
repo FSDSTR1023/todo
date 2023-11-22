@@ -10,6 +10,7 @@ router.post('/login', (req, res) => {
     const emailLogin= req.body;
     const userLogged = users.find((user)=>{user.email===emailLogin});
     console.log(userLogged);
+    res.json(userLogged);
 });
 
 export default router;

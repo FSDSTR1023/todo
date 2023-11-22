@@ -13,31 +13,31 @@ export const tasks = [
         dateend: "",
         id: "ASDFLKJ23475843",
         user: "juanmm",
-        createdAt: "",
+        createdAt: "11/11/2023",
         modifiedAt: "",
         deletedAt: null
     },
     {
         title: "Task 2",
         description: "Descripción task 2",
-        status: statuses.COMPLETED, //PENDING, IN_PROGRESS, COMPLETED  
+        status: statuses.COMPLETED, 
         datestart: "",
         dateend: "",
         id: "ASDFLKJ23475854",
         user: "juanmm",
-        createdAt: "",
+        createdAt: "1/1/2020",
         modifiedAt: "",
         deletedAt: null
     },
     {
         title: "Task 3",
         description: "Descripción task 3",
-        status: statuses.IN_PROGRESS, //PENDING, IN_PROGRESS, COMPLETED  
+        status: statuses.IN_PROGRESS,  
         datestart: "",
         dateend: "",
         id: "ASDFLKJ23475865",
         user: "juanmm",
-        createdAt: "",
+        createdAt: "9/7/2023",
         modifiedAt: "",
         deletedAt: null
     }
