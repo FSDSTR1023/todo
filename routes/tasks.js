@@ -1,7 +1,8 @@
 import { Router } from 'express'
 import tasks, {status} from '../data/tasks.data.js'
-import newDate from '../helpers/date.js'
-import { taskBodyValidation } from '../middleware/task.middleware.js'
+import moment from 'moment/moment.js'
+import { taskBodyValidation, taskDateValidation } from '../middleware/task.middleware.js'
+import { dateFormat } from '../utils/constants/date.js'
 
 const router = Router()
 
@@ -44,7 +45,7 @@ router.delete('/:id', (req,res) => {
   const { id } = req.params
   const oldTaskIndex = tasks.findIndex( task => task.id === id )
   const oldTask = tasks[oldTaskIndex]
-  const newTask = { ...oldTask, deletedAt: newDate() }
+  const newTask = { ...oldTask, deletedAt: moment().format(dateFormat) }
   
   tasks.splice(oldTaskIndex, 1, newTask)
 
@@ -54,17 +55,32 @@ router.delete('/:id', (req,res) => {
 })
 
 // POST/task/: Create a new task
-router.post('/', taskBodyValidation, (req,res) => {
+router.post('/',
+  taskBodyValidation,
+  taskDateValidation,
+  (req,res) => {
 
-  const newTask = req.body
-  newTask.id = Math.random().toString(36)
-  tasks.push(newTask)
+    const { title, description, status, datestart, dateend, user } = req.body
+    const newTask = {
+      title,
+      description,
+      status,
+      datestart,
+      dateend,
+      id: Math.random().toString(36),
+      user,
+      createdAt: moment().format(dateFormat),
+      modifiedAt: null,
+      deletedAt: null,
+    }
 
-  res.status(201).json(newTask)
+    tasks.push(newTask)
+
+    res.status(201).json(newTask)
 })
 
 // PATCH/task/id: Mark as completed
-router.patch('/:id', taskBodyValidation, (req,res) => {
+router.patch('/:id', (req,res) => {
 
   const { id } = req.params
   const oldTaskIndex = tasks.findIndex( task => task.id === id )
