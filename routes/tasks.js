@@ -27,7 +27,21 @@ router.put('/:id',
   (req,res) => {
 
   const oldTask = tasks[res.index]
-  const newTask = { ...oldTask, ...req.body, id: oldTask.id }
+  const { title, description, status, datestart, dateend, user } = req.body
+  const newProperties = Object.fromEntries(
+    Object.entries({
+      title,
+      description,
+      status,
+      datestart,
+      dateend,
+      user
+    }).filter(([_, value]) => value !== undefined))
+  
+  const newTask = {
+    ...oldTask,
+    ...newProperties
+  }
 
   tasks.splice(res.index, 1, newTask)
 
