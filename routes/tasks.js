@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import tasks, {status} from '../data/tasks.data.js'
 import moment from 'moment/moment.js'
-import { taskBodyValidation, taskDateValidation } from '../middleware/task.middleware.js'
+import { findIndex, taskBodyValidation, taskDateValidation } from '../middleware/task.middleware.js'
 import { dateFormat } from '../utils/constants/date.js'
 
 const router = Router()
@@ -12,45 +12,42 @@ router.get('/', (req, res) => {
 })
   
 // GET/tasks/id: Get a detail of a task
-router.get('/:id', (req,res) => {
+router.get('/:id', findIndex, (req,res) => {
 
-  const { id } = req.params
-  const task = tasks.find( task => task.id === id )
-
-  if(!task) res.status(404).send({msg: 'Task not found'})
+  const task = tasks[res.index]
 
   res.json(task)
 })
 
 // PUT/tasks/id: Update a task
-router.put('/:id', taskBodyValidation, (req,res) => {
-  
-  const { id } = req.params
-  const oldTaskIndex = tasks.findIndex( task => task.id === id )
-  const oldTask = tasks[oldTaskIndex]
-  const newTask = { ...oldTask, ...req.body, id: id }
+router.put('/:id',
+  taskBodyValidation,
+  taskDateValidation,
+  findIndex,
+  (req,res) => {
 
-  tasks.splice(oldTaskIndex, 1, newTask)
+  const oldTask = tasks[res.index]
+  const newTask = { ...oldTask, ...req.body, id: oldTask.id }
+
+  tasks.splice(res.index, 1, newTask)
 
   res.json({
-      msg: 'task updated successfully',
+      msg: 'Task updated successfully',
       oldTask,
       newTask,
   })
 })
 
 // DELETE/task/id: Remove a task
-router.delete('/:id', (req,res) => {
+router.delete('/:id', findIndex, (req,res) => {
 
-  const { id } = req.params
-  const oldTaskIndex = tasks.findIndex( task => task.id === id )
-  const oldTask = tasks[oldTaskIndex]
+  const oldTask = tasks[res.index]
   const newTask = { ...oldTask, deletedAt: moment().format(dateFormat) }
   
-  tasks.splice(oldTaskIndex, 1, newTask)
+  tasks.splice(res.index, 1, newTask)
 
   res.json({
-      msg: "Task " + id + " has been deleted"
+      msg: `Task ${newTask.id} deleted successfully`
   })
 })
 
@@ -60,37 +57,36 @@ router.post('/',
   taskDateValidation,
   (req,res) => {
 
-    const { title, description, status, datestart, dateend, user } = req.body
-    const newTask = {
-      title,
-      description,
-      status,
-      datestart,
-      dateend,
-      id: Math.random().toString(36),
-      user,
-      createdAt: moment().format(dateFormat),
-      modifiedAt: null,
-      deletedAt: null,
-    }
+  const { title, description, status, datestart, dateend, user } = req.body
+  const newTask = {
+    title,
+    description,
+    status,
+    datestart,
+    dateend,
+    id: Math.random().toString(36),
+    user,
+    createdAt: moment().format(dateFormat),
+    modifiedAt: null,
+    deletedAt: null,
+  }
 
-    tasks.push(newTask)
+  tasks.push(newTask)
 
-    res.status(201).json(newTask)
+  res.status(201).json(newTask)
 })
 
 // PATCH/task/id: Mark as completed
-router.patch('/:id', (req,res) => {
+router.patch('/:id', findIndex, (req,res) => {
 
-  const { id } = req.params
-  const oldTaskIndex = tasks.findIndex( task => task.id === id )
-  const oldTask = tasks[oldTaskIndex]
+  const oldTask = tasks[res.index]
   const newTask = { ...oldTask, status: status.COMPLETED }
   
-  tasks.splice(oldTaskIndex, 1, newTask)
+  tasks.splice(res.index, 1, newTask)
 
   res.json({
-    msg: `Task ${id} completed successfully`
+    msg: `Task ${newTask.id} completed successfully`,
+    newTask
   })
 
 })
