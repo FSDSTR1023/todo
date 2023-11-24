@@ -33,7 +33,15 @@ const TasksController = {
       return res.status(404).json({ msg: "Task not found" });
     }
     tasks[taskId] = { ...tasks[taskId], ...updatedTaskData };
-    res.json({ msg: "Task updated successfully", updatedTask: tasks[taskId] });
+    res.json({ msg: "Task updated successfully"});
+  },
+  patchTask: (req, res) => {
+    const taskId = tasks.findIndex((task) => task.id === parseInt(req.params.id));
+    if (taskId === -1) {
+      return res.status(404).json({ msg: "Task not found" });
+    }
+    tasks[taskId].status = statuses.complete;
+    res.json({ msg: `Task ${tasks[taskId].id} - ${tasks[taskId].title} completed successfully`});
   }
 };
 
