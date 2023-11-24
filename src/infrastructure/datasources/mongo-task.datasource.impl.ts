@@ -11,6 +11,7 @@ export class MongoTaskDatasourceImpl extends TasksDatasource {
 
         const task = await TaskSchema.create(infoCreateTask);
         if (!task) throw Error('MongoTaskDatasourceImpl.createTask: we couldn\'t create the task');
+        await task.save();
 
         const user = await UserSchema.findByIdAndUpdate(infoCreateTask.user, { $push: { tasks: task.id } });
         if (!user) throw new Error('MongoTaskDatasourceImpl.createTask: We couldn\'t join user and task');
@@ -36,11 +37,10 @@ export class MongoTaskDatasourceImpl extends TasksDatasource {
 
     async updateTask(taskId: string, userId: string, payload: InfoCreateTask): Promise<TaskEntity> {
 
-        const { id, createdAt, user, modifiedAt, status, deletedAt, ...changesTask } = TaskMapper.fromObject(payload)
+        const { id, createdAt, user, modifiedAt, deletedAt, ...changesTask } = TaskMapper.fromObject(payload)
 
-        await TaskSchema.findOneAndUpdate({ _id: taskId, user: userId }, { modifiedAt: Date.now(), ...changesTask });
+        const task = await TaskSchema.findOneAndUpdate({ _id: taskId, user: userId }, { modifiedAt: Date.now(), ...changesTask }, { new: true });
 
-        const task = await TaskSchema.findOne({ _id: taskId, user: userId });
         if (!task) throw new Error('MongoTaskDatasourceImpl.updateTask: task wasn\'t created');
 
         return TaskMapper.fromObject(task);
@@ -48,9 +48,8 @@ export class MongoTaskDatasourceImpl extends TasksDatasource {
 
     async completedTask(taskId: string, userId: string): Promise<TaskEntity> {
 
-        await TaskSchema.findOneAndUpdate({ _id: taskId, user: userId }, { status: Status.COMPLETED });
+        const task = await TaskSchema.findOneAndUpdate({ _id: taskId, user: userId }, { status: Status.COMPLETED }, { new: true });
 
-        const task = await TaskSchema.findOne({ _id: taskId, user: userId });
         if (!task) throw new Error('MongoTaskDatasourceImpl.completedTask: task wasn\'t created');
 
         return TaskMapper.fromObject(task);
@@ -58,9 +57,8 @@ export class MongoTaskDatasourceImpl extends TasksDatasource {
 
     async deleteTask(taskId: string, userId: string): Promise<TaskEntity> {
 
-        await TaskSchema.findOneAndUpdate({ _id: taskId, user: userId }, { deletedAt: Date.now() });
+        const task = await TaskSchema.findOneAndUpdate({ _id: taskId, user: userId }, { deletedAt: Date.now() }, { new: true });
 
-        const task = await TaskSchema.findOne({ _id: taskId, user: userId });
         if (!task) throw new Error('MongoTaskDatasourceImpl.deleteTask: task wasn\'t created');
 
         return TaskMapper.fromObject(task);

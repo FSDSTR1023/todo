@@ -1,10 +1,7 @@
 import { BcryptAdapter } from "../../config/bcrypt.adapter";
 import { envs } from "../../config/envs";
 import { JwtAdapter } from "../../config/jwt.adapter";
-import { UserSchema } from "../../db/mongo/models/userSchema";
-import { UserEntity } from "../../domain/entities/user.entity";
 import { JwtPayload } from "../../domain/interfaces/interfaces";
-import { UserMapper } from "../mappers/user.mapper";
 
 export class AuthService {
 
@@ -27,16 +24,12 @@ export class AuthService {
         return isCorrectJwt;
     }
 
-    public async login(email: string, password: string): Promise<UserEntity> {
-        const user = await UserSchema.findOne({ email });
-        if (!user) throw Error('AuthService.userLogin: User or password isn\'t valid');
+    public login(password: string, passwordDB: string): boolean {
 
-        const isValidatedPasword = BcryptAdapter.compare(password, user.password)
+        const isValidatedPasword = BcryptAdapter.compare(password, passwordDB)
         if (!isValidatedPasword) throw Error('AuthService.userLogin: User or password isn\'t valid');
 
-        const userEntity = UserMapper.fromObject(user);
-
-        return userEntity;
+        return isValidatedPasword;
     }
 
 }

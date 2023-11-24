@@ -10,4 +10,5 @@ export const statusTask = (value: string) => {
     if (!statuses.includes(value)) {
         throw new Error(`Invalid status. Valid statuses are: ${statuses.join(', ')}`)
     }
+    return true;
 }

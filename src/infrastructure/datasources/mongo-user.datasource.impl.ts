@@ -25,9 +25,12 @@ export class MongoUserDatasourceImpl extends UsersDatasource {
 
     async userLogin(loginProps: LoginProps): Promise<UserEntity> {
         const { email, password } = loginProps;
-
-        const user = await new AuthService().login(email, password);
-        return user;
+        const userDB = await UserSchema.findOne({ email });
+        if (!userDB) throw Error('AuthService.userLogin: User or password isn\'t valid');
+        const userLogged = new AuthService().login(password, userDB.password);
+        if (!userLogged) throw Error('AuthService.userLogin: User or password isn\'t valid');
+        const userEntity = UserMapper.fromObject(userDB);
+        return userEntity;
     }
 
 }
