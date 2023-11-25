@@ -1,13 +1,10 @@
 import { Router } from 'express'
-import users from '../data/users.data.js'
+import userController from '../controllers/userController.js'
 
 const router = Router()
 
-router.get('/', (req, res) => {
-    res.json({
-        user: "albertsube"
-    })
-  })
-  
+router.get('/', userController.getUsers)
+router.post('/:id', userController.verifyUser)
+router.post('/', userController.createUser)
 
-  export default router
+export default router
