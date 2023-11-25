@@ -21,6 +21,6 @@ app.get('/', (req,res) =>{
     res.send('Welcome TODO Application')
 })
 
-app.listen(port, () =>{
-    console.log('Example app listening on port ${port}')
+app.listen(port, () => {
+    console.log(`Example app listening on port ${port}`)
 })
