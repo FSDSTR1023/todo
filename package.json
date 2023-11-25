@@ -1,16 +1,19 @@
 {
   "name": "todo",
   "version": "1.0.0",
-  "description": "## Tasks",
-  "type": "module",
+  "description": "## Todo Backend",
+  "type": "commonjs",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon app.js"
   },
-  "author": "",
+  "author": "Enrique García",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.18.2"
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "mongoose": "^8.0.1",
+    "router": "^1.3.8"
   }
 }
