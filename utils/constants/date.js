@@ -1,3 +1,3 @@
-const dateFormat = 'YYYY-MM-DD HH:mm:ss'
+const dateFormat = 'YYYY-MM-DD'
 
 export {dateFormat}

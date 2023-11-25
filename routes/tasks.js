@@ -1,109 +1,27 @@
 import { Router } from 'express'
-import tasks, {status} from '../data/tasks.data.js'
-import moment from 'moment/moment.js'
-import { findIndex, taskBodyValidation, taskDateValidation } from '../middleware/task.middleware.js'
-import { dateFormat } from '../utils/constants/date.js'
+import taskController from '../controllers/taskController.js'
 
 const router = Router()
 
 // GET/tasks : Get a incomplete task list
-router.get('/', (req, res) => {
-    res.json(tasks.filter( task => task.status !== status.COMPLETED && task.deletedAt === null ))
-})
-  
+//TODO Filter deleted tasks
+//TODO Filter completed tasks
+router.get('/', taskController.getTasks)
+
 // GET/tasks/id: Get a detail of a task
-router.get('/:id', findIndex, (req,res) => {
+router.get('/:id', taskController.getTaskById)
 
-  const task = tasks[res.index]
-
-  res.json(task)
-})
-
-// PUT/tasks/id: Update a task
-router.put('/:id',
-  taskBodyValidation,
-  taskDateValidation,
-  findIndex,
-  (req,res) => {
-
-  const oldTask = tasks[res.index]
-  const { title, description, status, datestart, dateend, user } = req.body
-  const newProperties = Object.fromEntries(
-    Object.entries({
-      title,
-      description,
-      status,
-      datestart,
-      dateend,
-      user
-    }).filter(([_, value]) => value !== undefined))
-  
-  const newTask = {
-    ...oldTask,
-    ...newProperties
-  }
-
-  tasks.splice(res.index, 1, newTask)
-
-  res.json({
-      msg: 'Task updated successfully',
-      oldTask,
-      newTask,
-  })
-})
+// POST/task: Create a task
+router.post('/', taskController.createTask)
 
 // DELETE/task/id: Remove a task
-router.delete('/:id', findIndex, (req,res) => {
+router.delete('/:id', taskController.deleteTask)
 
-  const oldTask = tasks[res.index]
-  const newTask = { ...oldTask, deletedAt: moment().format(dateFormat) }
-  
-  tasks.splice(res.index, 1, newTask)
-
-  res.json({
-      msg: `Task ${newTask.id} deleted successfully`
-  })
-})
-
-// POST/task/: Create a new task
-router.post('/',
-  taskBodyValidation,
-  taskDateValidation,
-  (req,res) => {
-
-  const { title, description, status, datestart, dateend, user } = req.body
-  const newTask = {
-    title,
-    description,
-    status,
-    datestart,
-    dateend,
-    id: Math.random().toString(36),
-    user,
-    createdAt: moment().format(dateFormat),
-    modifiedAt: null,
-    deletedAt: null,
-  }
-
-  tasks.push(newTask)
-
-  res.status(201).json(newTask)
-})
+// PUT/tasks/id: Update a task
+router.put('/:id', taskController.updateTask)
 
 // PATCH/task/id: Mark as completed
-router.patch('/:id', findIndex, (req,res) => {
-
-  const oldTask = tasks[res.index]
-  const newTask = { ...oldTask, status: status.COMPLETED }
-  
-  tasks.splice(res.index, 1, newTask)
-
-  res.json({
-    msg: `Task ${newTask.id} completed successfully`,
-    newTask
-  })
-
-})
+router.patch('/:id', taskController.completeTask)
 
 
 export default router
