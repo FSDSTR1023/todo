@@ -1,13 +1,10 @@
-import { Router } from "express";
-import users from "../data/users.data.js";
-const router = Router();
+const express = require('express')
+const router = Router()
 
-router.get('/',(req,res)=>{
-    res.json(users)
-});
+const userController = require('../controllers/users.controller')
 
-router.post('/login',(req,res)=>{
-    res.json({msg: "Login succesful"})
-});
+router.post('/users',taskController.createUser )
+router.get('/users', taskController.getUsers )
+router.delete('/users/:id', taskController.deleteUserById )
 
-export default router;
+module.exports = router;
