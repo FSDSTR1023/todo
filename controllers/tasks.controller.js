@@ -82,7 +82,7 @@ async function patchTaskById(req,res) {
         Task.findByIdAndUpdate(
             req.params.id,
             {
-                $set: req.body.status === 'completed'
+                $set: { status: "completed" }
             },
             { 
                 new: true  //You should set the new option to true to return the document after update was applied.

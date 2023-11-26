@@ -10,4 +10,4 @@ router.get('/tasks/:id', taskController.getTaskById )
 router.get('/tasks', taskController.getTasks )
 router.delete('/tasks/:id', taskController.deleteTaskById )
 
-module.exports = router;
+module.exports = router
