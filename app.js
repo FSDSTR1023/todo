@@ -45,7 +45,6 @@ app.get('/users', (req,res) => {
 
 app.post('/login', (req, res) => {
     const { email, password } = req.body; // Accede a los campos email y password de req.body
-    console.log(req.body);
     const userFound = users.find(
         (u) => u.email === email && u.password === password
     );
