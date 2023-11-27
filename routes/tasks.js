@@ -1,14 +1,13 @@
-import { Router } from "express";
-import TasksController from "../controller/tasks.controller.js";
-import { taskBodyValidation } from "../middleware/task.validations.js";
-const router = Router();
+var express = require('express')
+var router = express.Router()
 
-const { getPendingTasks, getById, createTask } = TasksController;
+const taskController = require('../controller/tasks.controller')
 
-router.get("/", getPendingTasks);
-router.get("/:id", TasksController.getById);
-router.post("/", taskBodyValidation, createTask);
-router.put("/:id", taskBodyValidation, TasksController.updateTask);
-router.delete("/:id", TasksController.deleteTask);
-router.patch('/:id', TasksController.patchTask)
-export default router;
+router.post("/create", taskController.createTask)
+router.get("/", taskController.getTaskNoCompleted)
+router.get("/:id", taskController.getTaskById)
+router.put("/:id", taskController.updateTask);
+router.delete("/:id", taskController.deleteTask);
+router.patch("/:id", taskController.patchTask)
+
+module.exports = router
