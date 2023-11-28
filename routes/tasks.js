@@ -36,7 +36,7 @@ router.put("/edit/:id", taskBodyValidation, (req, res) => {
   }
 });
 
-// DELETE /tasks/:id: Remove a task
+// // DELETE /tasks/:id: Remove a task
 router.delete('/:id', (req, res) => {
   const id = parseInt(req.params.id);
   const taskIndex = tasks.findIndex(task => task.id === id); //finds the index of the task with the given ID.
@@ -51,11 +51,18 @@ router.delete('/:id', (req, res) => {
   }
 });
 
+
 // POST /tasks/: Create a new task
 router.post('/', (req, res) => {
   console.log("posted new task", req.query, req.params, req.body);
   const newTask = req.body;
-  newTask.id = Math.random().toString(36);
+
+  // Find the maximum existing ID
+  const maxId = tasks.reduce((max, task) => task.id > max ? task.id : max, 0);
+
+  // Assign the next ID
+  newTask.id = maxId + 1;
+
   tasks.push(newTask);
   res.status(201).json(newTask);
 });
