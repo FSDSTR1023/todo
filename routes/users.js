@@ -1,5 +1,5 @@
-import { Router } from 'express';
-import users from '../data/users.data.js'
+const Router = require('express');
+const users = require('../data/users.data.js');
 const router = Router();
 
 router.get('/', (req, res) => {
@@ -13,4 +13,4 @@ router.post('/login', (req, res) => {
     res.json(userLogged);
 });
 
-export default router;
+module.exports = router;
