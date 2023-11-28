@@ -3,7 +3,6 @@ const router = express.Router();
 import tasks, { statusTypes }  from "../mockup_data/tasks.js";
 import { taskBodyValidation } from "../middleware/task.middleware.js";
 
-
 // GET /tasks/: Get incompleted tasks
 router.get("/", (req, res) => {
   res.json(tasks.filter((task) => task.status !== statusTypes.COMPLETED));
@@ -11,17 +10,30 @@ router.get("/", (req, res) => {
 
 // GET /tasks/:id: Get details of a task
 router.get('/:id', (req, res) => {
-    // console.log("unique task", req.params);
-    // res.json(tasks[1]);
     const task = tasks.find((task) => task.id === req.params.id);
-    if (!task) res.status(404).send({ msg: "Task not found" });
+    if (!task) res.status(404).send({ msg: "Task was not found" });
     res.json(task);
 });
 
 // PUT /tasks/:id: Update a task
 router.put("/edit/:id", taskBodyValidation, (req, res) => {
-  console.log("update task", req.query, req.params, req.body);
-  res.json({ msg: "task updated succesfully" });
+  const id = parseInt(req.params.id);
+  const taskIndex = tasks.findIndex(task => task.id === id);
+
+  if (taskIndex > -1) {
+      // Update task with new data from req.body
+      tasks[taskIndex] = {
+          ...tasks[taskIndex],
+          ...req.body,
+          id: id, // Ensure the ID remains unchanged
+          modifiedAt: new Date().toISOString() // Update the modifiedAt timestamp
+      };
+
+      console.log("Updated task", tasks[taskIndex]);
+      res.json({ msg: "Task updated successfully", updatedTask: tasks[taskIndex] });
+  } else {
+      res.status(404).json({ msg: `Task with id ${id} not found` });
+  }
 });
 
 // DELETE /tasks/:id: Remove a task
@@ -44,7 +56,7 @@ router.post('/', (req, res) => {
   console.log("posted new task", req.query, req.params, req.body);
   const newTask = req.body;
   newTask.id = Math.random().toString(36);
-  lastareas.push(newTask);
+  tasks.push(newTask);
   res.status(201).json(newTask);
 });
 

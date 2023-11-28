@@ -43,7 +43,7 @@ const tasks = [
     {
         title: "Task Title 4",
         description: "Task Description",
-        status: statusTypes.COMPLETED, 
+        status: statusTypes.IN_PROGRESS, 
         datestart: "2023-11-01", 
         dateend: "2023-11-10", 
         id: 4, 
