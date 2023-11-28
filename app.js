@@ -14,12 +14,10 @@ async function main() {
 main().catch(err => console.log(err));
 
 var tasks = require('./routes/tasks.js')
-app.use('/tasks', tasks)
+var users = require('./routes/users.js')
 
-// app.get('/', (req, res) => {
-//   console.log(process.env.DB_USER)
-//   res.send('Hello World!')
-// })
+app.use("/tasks", tasks)
+app.use("/users", users)
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)

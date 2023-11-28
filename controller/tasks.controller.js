@@ -36,7 +36,7 @@ async function getTaskById(req,res) {
       res.status(200).json(taskDoc)
     })
     .catch(err => {
-      console.log('Error while getting the students: ', err)
+      console.log('Error while getting the task: ', err)
       res.status(400).json(err)
     });
 }
@@ -93,11 +93,13 @@ async function patchTask(req,res) {
 
 }
 
+
+
 module.exports = {
   createTask,
   getTaskNoCompleted,
   getTaskById,
   updateTask,
   deleteTask,
-  patchTask
+  patchTask,
 }

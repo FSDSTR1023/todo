@@ -1,10 +1,13 @@
-import { Router } from "express";
-const router = Router();
+var express = require('express')
+var router = express.Router()
 
-router.get("/", (req, res, next) => {
-  res.json({
-    user: "Jordi Galobart",
-  });
-});
+const userController = require('../controller/user.controller')
 
-export default router;
+
+router.post("/", userController.createUser)
+router.get("/", userController.getUserById)
+router.put("/:id", userController.updateUser)
+router.delete("/:id", userController.deleteUser)
+router.patch("/:id", userController.patchPassword)
+
+module.exports = router
