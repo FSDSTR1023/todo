@@ -5,7 +5,7 @@ const userController = require('../controllers/userController');
 
 router.get('/', userController.getAllUsers); //así obtenemos todos los usuarios
 
-router.post('/create', userController.createUser); 
+router.post('/', userController.createUser); 
 
 router.get('/:id', userController.getUserById);
 

@@ -7,12 +7,12 @@ router.get('/', taskController.getAllTasks);
 
 router.get('/:id', taskController.getTaskById);
 
-router.post('/create', taskController.createTask);
+router.post('/', taskController.createTask);
 
-router.put('/update/:id', taskController.updateTask);
+router.put('/:id', taskController.updateTask);
 
-router.delete('/delete/:id', taskController.deleteTask);
+router.delete('/:id', taskController.deleteTask);
 
-router.patch('/update/:id', taskController.changeTaskStatus);
+router.patch('/:id', taskController.changeTaskStatus);
 
 module.exports = router;

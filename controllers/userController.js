@@ -48,9 +48,14 @@ async function getUserById(req, res) {
         res.status(200).json({ msg: 'Login succesful' });
       })
       .catch((err) => {
-        console.log(err, ' <---- error try again something went wrong');
-        res.status(400).json(err);
+        console.log(err, ' Error. Try again, something went wrong');
+        res.status(400).json({msg: 'Something went wrong.'});
       });
   }
 
-module.exports = { getAllUsers, createUser, getUserById, loginUser };
+module.exports = { 
+    getAllUsers, 
+    createUser, 
+    getUserById, 
+    loginUser 
+};
