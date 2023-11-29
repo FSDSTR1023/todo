@@ -30,8 +30,11 @@ export async function loginUser(req, res) {
         const user = await User.findOne({ email: email, password: password }); 
         if (user) {
             const token = generateJwtToken(user._id); // Function to generate JWT
-            res.json({ token });
-            res.json({ msg: "User logged in successfully", user });
+            res.json({ 
+                token: token,
+                msg: "User logged in successfully",
+                user: user
+            });
         } else {
             res.status(401).json({ msg: "Invalid credentials" });
         }
