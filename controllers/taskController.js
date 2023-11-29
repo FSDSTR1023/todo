@@ -13,6 +13,21 @@ async function getAllTasks (req,res) {
     });
 }
 
+
+async function getAllCompletedTasks (req,res) {
+    Task.find({
+        status: "completed"
+    })
+    .then((task) => {
+        console.log('Tasks found', task);
+        res.status(200).json(task);
+    })
+    .catch((err) => {
+        console.log(err, 'Oh no! Something went wrong! Try again.');
+        res.status(400).json(err);
+    });
+}
+
 async function getTaskById(req,res) {
     Task.findById(req.params.id)
     .then((task) => {
@@ -90,6 +105,7 @@ async function changeTaskStatus(req, res) {
 
 module.exports = { 
     getAllTasks, 
+    getAllCompletedTasks,
     getTaskById,
     createTask,
     updateTask,
