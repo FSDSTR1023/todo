@@ -14,12 +14,8 @@ async function createTask(req, res) {
     });
 }
 
-async function getTaskNoCompleted(req,res) {
-  Task.find(
-    {
-      status: {$ne: "completed" }
-    }
-  )
+async function getTask(req,res) {
+  Task.find()
     .then(incompleteTasks => {
       console.log('Found this: ', incompleteTasks)
       res.status(200).json(incompleteTasks)
@@ -103,7 +99,7 @@ async function patchTask(req,res) {
 
 module.exports = {
   createTask,
-  getTaskNoCompleted,
+  getTask,
   getTaskById,
   updateTask,
   deleteTask,
