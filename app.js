@@ -41,6 +41,20 @@ app.use((err, req, res, next) => {
   res.status(500).send("500 - Server Error");
 });
 
+// Function to close the database connection
+function closeDatabaseConnection() {
+  mongoose.connection.close(() => {
+      console.log('Mongoose connection closed.');
+  });
+}
+// Handle graceful shutdown
+// Listens for the SIGINT signal (typically triggered by pressing Ctrl+C in the terminal) 
+//to handle graceful shutdown. It closes the database connection and exits the process.
+process.on('SIGINT', () => {
+  closeDatabaseConnection();
+  process.exit(0);
+});
+
  //Port
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
