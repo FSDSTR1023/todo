@@ -2,7 +2,7 @@ import Task from '../models/task.model.js'
 import { status } from '../data/tasks.data.js'
 
 const getTasks = async (req, res) => {
-    Task.find()
+    Task.find({deletedAt: undefined})
     .then(taskList => res.status(200).json(taskList))
     .catch(error => {
         console.log(`Error finding the tasks: ${error}`)
@@ -31,13 +31,23 @@ const createTask = async (req, res) => {
     })
 }
 
+// const deleteTask = async (req, res) => {
+//     Task.deleteOne({ _id: req.params.id })
+//     .then(res.status(200).json({
+//         msg: `Task ${req.params.id} deleted successfully`
+//     }))
+//     .catch(error => {
+//         console.log(`Error deleting the task: ${error}`)
+//         res.status(400).json(error)
+//     })
+// }
+
 const deleteTask = async (req, res) => {
-    Task.deleteOne({ _id: req.params.id })
-    .then(res.status(200).json({
-        msg: `Task ${req.params.id} deleted successfully`
-    }))
+    Task.findByIdAndUpdate(req.params.id,
+        { deletedAt: new Date()}, {new: true})
+    .then(task => res.status(200).json(task))
     .catch(error => {
-        console.log(`Error deleting the task: ${error}`)
+        console.log(`Error updating the task: ${error}`)
         res.status(400).json(error)
     })
 }

@@ -13,9 +13,14 @@ const taskSchema = new Schema({
   datestart: Date,
   dateend: Date,
   user: String,
-  createdAt: Date,
-  modifiedAt: Date,
+  // createdAt: {
+  //   type: Date,
+  //   default: new Date()
+  // },
+  // modifiedAt: Date,
   deletedAt: Date,
+},{
+  timestamps: true
 });
 
 // Student is our mongoose model class
