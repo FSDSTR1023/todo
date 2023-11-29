@@ -209,3 +209,7 @@
 - firstname
 - lastname
 - email
+
+Para iniciar la aplicación: 
+npm install
+yarn start
