@@ -1,9 +1,9 @@
 const User = require('../models/user.model');
 
 async function getUsers(req,res) {
-    User.findAll()
+    User.find()
         .then(users => {
-            console.log('Found this: ', tauserssks)
+            console.log('Found this: ', users)
             res.status(200).json(users)
         })
         .catch(err => {
