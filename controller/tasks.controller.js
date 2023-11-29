@@ -1,4 +1,5 @@
 const { model } = require('mongoose')
+const User = require('../models/user.models')
 const Task = require('../models/task.models')
 
 async function createTask(req, res) {
@@ -42,23 +43,28 @@ async function getTaskById(req,res) {
 }
 
 async function updateTask(req,res) {
-  Task.findByIdAndUpdate(
-    req.params.id,
-    {
-      $set: req.body
-    },
-    { 
-      new: true
+  try {
+    if (Array.isArray(req.body.user)) {
+      const updatedTask = await Task.findByIdAndUpdate(
+        req.params.id,
+        { $addToSet: req.body },
+        { new: true }
+      );
+      console.log('Updated tasks:', updatedTask);
+      res.status(200).json(updatedTask);
+    } else {
+      const updatedTask = await Task.findByIdAndUpdate(
+        req.params.id,
+        { $set: req.body },
+        { new: true }
+      );
+      console.log('Updated task:', updatedTask);
+      res.status(200).json(updatedTask);
     }
-  )
-    .then(updateTask => {
-      console.log('Updated student: ', updateTask)
-      res.status(200).json(updateTask)
-    })
-    .catch(err => {
-      console.log('Error while updating the student: ', err)
-      res.status(400).json(err)
-    });
+  } catch (error) {
+    console.error('Error updating task:', error);
+    res.status(400).json(error);
+  }
 }
 
 async function deleteTask(req,res) {
