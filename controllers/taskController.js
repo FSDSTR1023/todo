@@ -80,4 +80,4 @@ async function changeStatusTask(req, res) {
       });
   }
     
-module.exports = { createTask, getAllTasks, updateTask, getTaskById, changeStatusTask, deleteTask};
+module.exports = { createTask, getAllTasks, updateTask, getTaskById, changeStatusTask, deleteTask}; 
