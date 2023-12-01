@@ -1,6 +1,8 @@
 const mongoose = require('mongoose')
 const User = require('../models/user.models')
 const Task = require('../models/task.models')
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 
 
 async function createUser(req, res) {
@@ -84,7 +86,27 @@ async function patchPassword(req,res) {
 
 }
 
+async function logInUser(req,res) {
+  const { email, password } = req.body;
 
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(401).json({ message: 'Invalid email or password' });
+    }
+
+    if (password !== user.password) {
+      return res.status(401).json({ message: 'Invalid email or password' });
+    }
+
+    const token = jwt.sign({ user: user.email }, 'your_secret_key', { expiresIn: '1h' });
+
+    res.status(200).json({ token });
+  } catch (error) {
+    console.error('Login error:', error);
+    res.status(500).json({ message: 'Login failed' });
+  }
+}
 
 module.exports = {
   createUser,
@@ -92,4 +114,5 @@ module.exports = {
   updateUser,
   deleteUser,
   patchPassword,
+  logInUser
 }

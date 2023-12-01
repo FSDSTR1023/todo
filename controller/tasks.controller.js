@@ -39,28 +39,19 @@ async function getTaskById(req,res) {
 }
 
 async function updateTask(req,res) {
-  try {
-    if (Array.isArray(req.body.user)) {
-      const updatedTask = await Task.findByIdAndUpdate(
-        req.params.id,
-        { $addToSet: req.body },
-        { new: true }
-      );
-      console.log('Updated tasks:', updatedTask);
-      res.status(200).json(updatedTask);
-    } else {
-      const updatedTask = await Task.findByIdAndUpdate(
-        req.params.id,
-        { $set: req.body },
-        { new: true }
-      );
-      console.log('Updated task:', updatedTask);
-      res.status(200).json(updatedTask);
-    }
-  } catch (error) {
-    console.error('Error updating task:', error);
-    res.status(400).json(error);
-  }
+  Task.findByIdAndUpdate(
+    req.params.id,
+    { $set: req.body },
+    { new: true }
+  )
+    .then(taskDoc => {
+      console.log('Found this task by their ID: ', taskDoc)
+      res.status(200).json(taskDoc)
+    })
+    .catch(err => {
+      console.log('Error while getting the task: ', err)
+      res.status(400).json(err)
+    });
 }
 
 async function deleteTask(req,res) {

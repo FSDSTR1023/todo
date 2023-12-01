@@ -7,7 +7,7 @@ const taskSchema = new Schema({
   title: String,
   description: String,
   status: String,
-  user: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
+  user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
   datestart: Date,
   dateend: Date,
   createdAt: Date,
