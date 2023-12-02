@@ -1,38 +1,87 @@
 import { Router } from "express";
-import tasks, {statuses} from "../data/tasks.data.js";
+import tasks, {statuses} from "../models/tasks.model.js";
 import { taskBodyValidation } from "../middleware/tasks.middleware.js";
 const router = Router ();
 
-router.get('/', (req, res) => {
-  res.json(tasks.filter((task) => task.status !== statuses.COMPLETED))
+router.get('/', async (req, res) => {
+  try {
+    const allTasks = await tasks.find();
+    res.status(201).json(allTasks);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 })
 
-router.get('/:id', (req,res) => {
-  const task = tasks.find((task) => task.id === req.params.id);
-  if (!task) res.status(404).send({msg: "Task not found"});
-  res.json(task);  
+router.get('/:id', async (req,res) => {
+  try {
+    const singleTask = await tasks.findById(req.params.id);
+    if (!singleTask) {
+      return res.status(404).json({ msg: "Task not found" });
+    }
+    res.status(200).json(singleTask);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  } 
 })
 
-router.put('/:id', taskBodyValidation, (req,res)=> {
-  console.log("update task", req.query, req.params, req.body);
-  res.json({msg: "task updated successfully"});
+router.put('/:id', taskBodyValidation, async (req,res)=> {
+  try {
+    const updatedTarea = await tasks.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    );
+    if (!updatedTarea) {
+      return res.status(404).json({ msg: "Task not found" });
+    }
+    res.status(200).json(updatedTarea);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 });
 
-
-router.delete('/:id', (req,res)=> {
-  const deletedTasks = tasks.find((task) => task.id === req.params.id)
-  res.json({msg: req.params.id+" has been deleted", deleted_task: deletedTasks})
+router.delete('/:id', async (req,res)=> {
+  try {
+    const deletedTask = await tasks.findByIdAndDelete(req.params.id);
+    if (!deletedTask) {
+      return res.status(404).json({ msg: "Task not found" });
+    }
+    res.status(200).json({ msg: "Task deleted successfully", deletedTask });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 })
 
-router.post('/', taskBodyValidation, (req, res) => {
-  const newTask = req.body;
-  newTask.id = Math.random().toString(36);
-  tasks.push(newTask);
-  res.status(201).json(newTask);
+router.post('/', taskBodyValidation, async (req, res) => {
+  try {
+    const newTask = new tasks(req.body);
+    const savedTask = await newTask.save();
+    res.status(201).json(savedTask);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 });
 
-router.patch('/:id', (req,res)=> {
-  res.json({msg: "Task marked as completed"})
+router.patch('/:id', async (req,res)=> {
+  try {
+    const taskToUpdate = await tasks.findById(req.params.id);  
+    if (!taskToUpdate) {
+      return res.status(404).json({ msg: "Task not found" });
+    } 
+    for (const [key, value] of Object.entries(req.body)) {
+      taskToUpdate[key] = value;
+    } 
+    const updatedTarea = await taskToUpdate.save();
+    res.status(200).json(updatedTarea);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 })
 
 export default router;
