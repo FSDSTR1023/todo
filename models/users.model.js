@@ -10,6 +10,6 @@ const usersSchema = new mongoose.Schema ({
         deletedAt: {type: Date, default: null},
     });
 
-const user = mongoose.model("Users", usersSchema);
+const users = mongoose.model("Users", usersSchema);
 
 export default users;
