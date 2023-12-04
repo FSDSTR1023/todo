@@ -64,28 +64,18 @@ export async function removeTask (req, res) {
     }
 };
 
-// POST /tasks Create a new task
-export async function createTask (req, res) {
-    let defaultUserId = "65667ea907c742949ec65527";
-    let userId;
 
-    if (req.headers.authorization) {
-        userId = getUserIdFromToken(req); // Extract user ID from the token
-    } else {
-        userId = defaultUserId; // Setting a default user ID
-    }
+export async function createTask(req, res) {
+    const newTask = new Task(req.body);
 
-    const newTask = new Task({
-        ...req.body,
-        user: userId
-    });
     try {
         const savedTask = await newTask.save();
-        res.status(201).json(savedTask);
+        const populatedTask = await Task.findById(savedTask._id).populate('user', 'firstname lastname');
+        res.status(201).json(populatedTask);
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
-};
+}
 
 // PATCH /tasks/:id: Mark as completed
 export async function markTaskAsCompleted (req, res) {
