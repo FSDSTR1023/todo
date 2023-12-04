@@ -64,18 +64,28 @@ export async function removeTask (req, res) {
     }
 };
 
-
 export async function createTask(req, res) {
-    const newTask = new Task(req.body);
+    const taskData = req.body;
+
+    // If no user is selected, don't assign a user to the task
+    if (taskData.user === "") {
+        delete taskData.user;
+    }
+
+    const newTask = new Task(taskData);
 
     try {
         const savedTask = await newTask.save();
-        const populatedTask = await Task.findById(savedTask._id).populate('user', 'firstname lastname');
+        // Populate the user field if it exists
+        const populatedTask = await Task.findById(savedTask._id)
+                                         .populate('user', 'firstname lastname');
         res.status(201).json(populatedTask);
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
 }
+
+
 
 // PATCH /tasks/:id: Mark as completed
 export async function markTaskAsCompleted (req, res) {
