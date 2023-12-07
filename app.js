@@ -10,7 +10,7 @@ const mongoDB = "mongodb+srv://"+process.env.DB_USER+":"+process.env.DB_PASSWORD
 async function main() {
   await mongoose.connect(mongoDB);
 }
-main().catch(err => console.log(err));
+main().catch(err => console.log(err)); 
 
 app.get('/', (req, res) => {
     console.log(process.env.DB_USER, '<--- ¿BBDD conectada? de app.js');
@@ -18,5 +18,5 @@ app.get('/', (req, res) => {
 })
 
 app.listen(port, ()=> {
-    console.log('Server running on port: ', port);
+    console.log('Servidor funcionando en el puerto ---> ', port);
 })
