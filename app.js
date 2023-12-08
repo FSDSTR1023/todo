@@ -12,11 +12,14 @@ async function main() {
 }
 main().catch(err => console.log(err)); 
 
+const taskRoutes = require('./routes/task.routes');
+app.use('/', taskRoutes);
+
 app.get('/', (req, res) => {
-    console.log(process.env.DB_USER, '<--- ¿BBDD conectada? de app.js');
+    console.log(process.env.DB_USER, '<--- ¿User connected?');
     res.send('BACKEND WORKING 😀')
 })
 
 app.listen(port, ()=> {
-    console.log('Servidor funcionando en el puerto ---> ', port);
+    console.log('Server working on ➡️ ', port);
 })
