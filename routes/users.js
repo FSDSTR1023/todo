@@ -12,8 +12,5 @@ router.get('/', UserController.getUserInfo); // Use UserController.getUserInfo
 
 router.get('/tasks/user/:userId', (req, res) => {
     const userId = req.params.userId;
-    // Retrieve tasks for the specified user and send the response
-    // You can call a function to fetch tasks associated with this user
-    // and then send them as a response here.
   });
 export default router;

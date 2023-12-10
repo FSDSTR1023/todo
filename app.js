@@ -16,7 +16,6 @@ dbConnection();
 app.use(loggingMiddleware.logginCallRoute);
 app.use(express.json());
 
-
 // Route for "Hello World!"
 app.get('/', (req, res) => {
   res.send('Hello World!');
@@ -25,8 +24,6 @@ app.get('/', (req, res) => {
 // Route to retrieve tasks for a specific user
 app.get('/tasks/user/:userId', (req, res) => {
   const userId = req.params.userId;
-  // Retrieve tasks for the specified user (e.g., using a database query)
-  // Return the tasks as a response
 });
 
 // Task-related routes
@@ -45,8 +42,6 @@ app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send('500 - Server Error');
 });
-
-
 
 app.listen(port, () => {
   console.log(`App listening on port ${port}`);

@@ -7,7 +7,7 @@ export const authenticateToken = (req, res, next) => {
   const { authorization } = req.headers;
   if (!authorization) return res.sendStatus(401);
 
-  const token = authorization.split(' ')[1] || authorization; // Handle token prefixed with 'Bearer '
+  const token = authorization.split(' ')[1] || authorization; 
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
     if (err) return res.sendStatus(403);
     req.user = user;
@@ -25,4 +25,3 @@ export const hashPassword = async (req, res, next) => {
   }
 };
 
-// Add more middleware as per your application's needs

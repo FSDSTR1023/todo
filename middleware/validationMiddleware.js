@@ -30,4 +30,3 @@ export const validateTask = [
   },
 ];
 
-// Additional validation functions can be added as needed
