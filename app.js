@@ -10,13 +10,13 @@ import dbConnection from './config/db.config.js';
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Database connection
+// Database connection details in db.config.js
 dbConnection();
 
 app.use(loggingMiddleware.logginCallRoute);
 app.use(express.json());
 
-// Route for "Hello World!"
+// Route for "Hello World!" to ensure server is up 
 app.get('/', (req, res) => {
   res.send('Hello World!');
 });
