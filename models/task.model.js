@@ -30,13 +30,13 @@ const taskSchema = new Schema({
     status: {
         type: String,
         required: true,
-        default: 'PENDING'
     },
     user: {
-        type: String,
-        required: true,
-        trim: true
-    }
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    },
+}, {
+    timestamps: true,
 });
 
 module.exports = mongoose.model('Task', taskSchema);

@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
-const taskController = require('../controllers/task.controller')
+const taskController = require('../controllers/taskController')
 
-router.post('/', taskController.createTask);
+router.post('/task', taskController.createTask);
 router.get('/tasks', taskController.getAllTasks);
 router.get('/tasks/:id', taskController.getTaskById);
 router.put('/edit/:id', taskController.editTask);

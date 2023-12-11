@@ -13,7 +13,10 @@ async function main() {
 main().catch(err => console.log(err)); 
 
 const taskRoutes = require('./routes/task.routes');
+const userRoutes = require('./routes/user.routes');
+
 app.use('/', taskRoutes);
+app.use('/', userRoutes);
 
 app.get('/', (req, res) => {
     console.log(process.env.DB_USER, '<--- ¿User connected?');
