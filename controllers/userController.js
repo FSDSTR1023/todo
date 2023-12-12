@@ -37,14 +37,37 @@ async function getAllUsers(req, res){
         })
 }
 
+async function deleteUserByID(req, res){
+    User.findByIdAndDelete(req.params.id)
+        .then((user) => {
+            console.log('user deleted', user);
+            res.status(200).json(user);
+        })
+        .catch((err) => {
+            console.log(err, ' <---- try again, something went wrong')
+            res.status(400).json(err);
+        })
+}
 
-
+async function getUserById(req, res){
+    User.findById(req.params.id) //Importante después de create
+        .then((user) => {
+            console.log('user found', user);
+            res.status(200).json(user);
+        })
+        .catch((err) => {
+            console.log(err, ' <---- try again, something went wrong')
+            res.status(400).json(err);
+        })
+}
 
 
 
 module.exports = {
     createUser,
     getAllUsers,
+    getUserById,
+    deleteUserByID,
     getUserById
 }
 
