@@ -40,3 +40,24 @@ export async function getUserById(req, res) {
 
         );
 }
+export async function getUserToLogin(req, res) {
+    const { username, password } = req.body;
+
+    try {
+        const user = await User.findOne({ username }).exec();
+
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        // Check if the entered password matches the stored password
+        if (user.password === password) {
+            return res.status(200).json(user);
+        } else {
+            return res.status(401).json({ error: 'Incorrect password' });
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+}

@@ -27,7 +27,7 @@ export async function getTaskById(req, res) {
         );
 }
 export async function getTasks(req, res) {
-    task.find({ status: { $eq: statusTypes.PENDING } })
+    task.find({})
         .then(taskInfo => {
             console.log(`Tasks: ${taskInfo}`)
             res.status(200).json(taskInfo)
@@ -40,6 +40,7 @@ export async function getTasks(req, res) {
         );
 }
 export async function updateTask(req, res) {
+
     task.findByIdAndUpdate(
         req.params.id,
         {

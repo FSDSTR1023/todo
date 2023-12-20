@@ -4,17 +4,20 @@ import tasks from "./routes/tasks.js";
 import users from "./routes/users.js";
 import dotenv from 'dotenv'
 import mongoose from 'mongoose';
-// require('dotenv').config();
+import cors from 'cors';
 dotenv.config()
 app.use(express.json());
 const port = 3000
-// const mongoose = require("mongoose");
+
 const mongoDB = "mongodb+srv://" + process.env.DB_USER + ":" + process.env.DB_PASSWORD + "@" + process.env.DB_SERVER + "/" + process.env.DB_NAME + "?retryWrites=true&w=majority";
 async function main() {
     await mongoose.connect(mongoDB);
 }
 main().catch(err => console.log(err));
 
+app.use(cors({
+    origin: '*'
+}));
 app.use(express.json());
 
 app.use("/tasks", tasks);
