@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const status = {
   PENDING: "pending",
-  IN_PROGRESS: "in progress",
+  IN_PROGRESS: "in_progress",
   DONE: "done",
 };
 

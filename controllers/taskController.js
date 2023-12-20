@@ -55,7 +55,7 @@ async function updateTask(req, res) {
     .findByIdAndUpdate(req.params.id, { $set: req.body }, { new: true })
     .then((updatedTask) => {
       console.log(`Tarea actualizada correctamente ${updatedTask}`);
-      res.status(200).json(taskDoc);
+      res.status(200).json(updatedTask);
     })
     .catch((err) => {
       console.log(`Error al actualizar la tarea, intentalo de nuevo ${err}`);
