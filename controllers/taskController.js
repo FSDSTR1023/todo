@@ -1,110 +1,87 @@
-const Task = require('../models/task.model');
+const { err } = require("console");
 
-async function createTask(req, res){  //si la tarea se realiza con éxito .then()
-    Task.create(req.body)
-    .then((task) => {
-        console.log('task created', task);
-        res.status(200).json(task);
+const task = require("../models/tasks.model.js");
+
+// Crear una Tarea
+async function createTask(req, res) {
+  task
+    .create(req.body)
+    .then((tasksDoc) => {
+      console.log(`Tarea creada correctamente ${tasksDoc}`);
+      res.status(201).json(tasksDoc);
     })
-
-    .catch((err) => {  //si la tarea no se realiza .catch
-        console.log(
-            err, 
-            'error, try again');
-        res.status(400).json(err);
+    .catch((err) => {
+      console.log(`Error al crear la tarea, prueba de nuevo ${err}`);
+      res.status(400).json(err);
     });
-
 }
 
-async function getAllTasks(req, res){
-    Task.find()
-    .then((task) => {
-        console.log('task found', task);
-        res.status(200).json(task);
+// Obtener todas las Tareas
+
+async function getAllTasks(req, res) {
+  task
+    .find({})
+    .then((tasksDoc) => {
+      console.log(`Tareas obtenidas correctamente ${tasksDoc}`);
+      res.status(200).json(tasksDoc);
     })
-
-    .catch((err) => {  
-        console.log(
-            err, 
-            'error, try again');
-        res.status(400).json(err);
+    .catch((err) => {
+      console.log(
+        `Error al obtener todas las Tareas, intentalo de nuevo ${err}`
+      );
+      res.status(400).json(err);
     });
-
-
 }
-async function updateTask(req, res){
-    Task.findByIdAndUpdate(req.params.id, req.body, { new: true })
-    .then((task) => {
-        console.log('task updated', task);
-        res.status(200).json(task);
-    })
 
-    .catch((err) => {  
-        console.log(
-            err, 
-            'error, try again');
-        res.status(400).json(err);
-    });
-
-
-
-}
+// Obtener una Tarea por su ID
 
 async function getTaskById(req, res) {
-    console.log(req, 'request')
-    Task.findById(req.params.id)
-    .then((task) => {
-        console.log('task found', task);
-        res.status(200).json(task);
+  task
+    .findById(req.params.id)
+    .then((tasksDoc) => {
+      console.log(`Tarea obtenida correctamente ${tasksDoc}`);
+      res.status(200).json(tasksDoc);
     })
-
-    .catch((err) => {  
-        console.log(
-            err, 
-            'error, try again');
-        res.status(400).json(err);
-    });
-
-}
-
-
-
-async function deleteTask(req, res){
-    Task.findByIdAndDelete(req.params.id)
-    .then((task) => {
-        console.log('task deleted', task);
-        res.status(200).json(task);
-    })
-
-    .catch((err) => {  
-        console.log(
-            err, 
-            'error, try again');
-        res.status(400).json(err);
+    .catch((err) => {
+      console.log(`Error al obtener la tarea, intentalo de nuevo ${err}`);
+      res.status(400).json(err);
     });
 }
 
+// Actualizar una Tarea por su ID
 
-async function changeStatus(req, res){
-    Task.findById(req.params.id, req.body, { new: true })
-    .then((task) => {
-      const userId = task.user;
-      console.log('userId:', userId);
-
-      if (userId.toString() !== req.body.user) {
-        return res.status(403).json({ msg: 'Forbidden' });
-      }
-      console.log('status Changed to:', task.status, 'for task:', task._id);
-      task.save(task);
-      res.status(200).json({ msg: 'Status changed' });
+async function updateTask(req, res) {
+  task
+    .findByIdAndUpdate(req.params.id, { $set: req.body }, { new: true })
+    .then((updatedTask) => {
+      console.log(`Tarea actualizada correctamente ${updatedTask}`);
+      res.status(200).json(updatedTask);
     })
-
-    .catch((err) => {  
-        console.log(
-            err, 
-            'error, try again');
-        res.status(400).json({ msg : 'Task not found'});
+    .catch((err) => {
+      console.log(`Error al actualizar la tarea, intentalo de nuevo ${err}`);
+      res.status(400).json(err);
     });
 }
 
-module.exports = { createTask, getAllTasks, updateTask, getTaskById, deleteTask, changeStatus};
+// Eliminar una Tarea por su ID
+
+async function deleteTask(req, res) {
+  task
+    .findByIdAndDelete(req.params.id)
+    .then((deleteTask) => {
+      console.log(`Tarea eliminada correctamente ${deleteTask}`);
+      res.status(200).json(deleteTask);
+    })
+    .catch((err) => {
+      console.log(`Error al eliminar la tarea, intentalo de nuevo ${err}`);
+      res.status(400).json(err);
+    });
+}
+
+module.exports = {
+  createTask,
+  getAllTasks,
+  getTaskById,
+  updateTask,
+  deleteTask,
+};
