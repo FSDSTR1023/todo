@@ -61,13 +61,29 @@ async function getUserById(req, res){
         })
 }
 
-
+async function loginUser(req, res) {
+    User.findOne({ email: req.body.email}) 
+        .then((user) => {
+            if (!user) {
+                return res.status(404).json({ msg: 'User not found'})
+            }
+            if ((!req.body.password)|| (user.password != req.body.password)) {
+                return res.status(403).json({ msg: 'Forbidden'})
+            }
+            res.status(200).json({ msg: 'Login succesful' });
+        })
+        .catch((err) => {
+            console.log(err, ' <---- Try again, somethign went wrong');
+            res.status(400).json(err);
+        });
+}
 
 module.exports = {
     createUser,
     getAllUsers,
     getUserById,
     deleteUserByID,
-    getUserById
+    getUserById,
+    loginUser
 }
 

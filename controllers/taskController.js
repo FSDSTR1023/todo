@@ -60,17 +60,24 @@ async function deleteTaskByID(req, res){
         })
 }
 
-async function changeStatus(req, res){
-    Task.findOneAndUpdate({_id: req.params.id}, {status : req.body.status}, {new: true})
-        .then((task) => {
-            console.log('task status changed', task);
-            res.status(200).json(task);
-        })
-        .catch((err) => {
-            console.log(err, ' <---- try again, something went wrong')
-            res.status(400).json(err);
-        })
-}
+async function changeStatusTask(req, res) {
+    Task.findByIdAndUpdate(req.params.id, req.body, { new: true })
+      .then((task) => {
+        const userId = task.user;
+        console.log('userId:', userId);
+  
+        if (userId.toString() !== req.body.user) {
+          return res.status(403).json({ msg: 'Forbidden' });
+        }
+        console.log('status Changed to:', task.status, 'for task:', task._id);
+        task.save(task);
+        res.status(200).json({ msg: 'Status changed' });
+      })
+      .catch((err) => {
+        console.log(err, ' <---- error try again something went wrong');
+        res.status(404).json({ msg: 'Task not found' });
+      });
+  }
 
 module.exports = {
     createTask,
@@ -78,6 +85,6 @@ module.exports = {
     editTask,
     getTaskById,
     deleteTaskByID,
-    changeStatus
+    changeStatusTask,
 }
 
