@@ -17,12 +17,13 @@ async function getTasks(req,res) {
 
 async function createTask(req, res) {
     const task= req.body;
+    console.log(task);
     task.id = Math.random().toString(36);
     task.createdAt = new Date();
     console.log(task.createdAt);
     Task.create(task)
     .then(task => {
-        console.log(`Student create worked well: ${task}`)
+        console.log(`Task created succesfully: ${task}`)
         res.status(200).json(task)
     })
     .catch(err => {
@@ -62,7 +63,7 @@ async function deleteTaskById(req,res) {
     console.log(deletedDate);
     Task.findByIdAndUpdate(req.params.id, {$set: {deletedAt: deletedDate}})
         .then(task => {
-            console.log('Deleted this: ', task)
+            console.log('Task deleted: ', task)
             res.status(200).json(task)
         })
         .catch(err => {
