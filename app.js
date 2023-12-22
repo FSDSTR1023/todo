@@ -1,15 +1,12 @@
 const express = require('express');
 const app = express();
-const port = 3000;
+const port = 8002;
 const cors = require('cors');
- 
-app.use(express.json());
+
 app.use(cors({
   origin: 'http://localhost:5173',
   credentials: true,
-})
-)
-
+}))
 
 app.use(express.json()); //metodo que tiene express para devolver json y no texto plano
 
@@ -17,7 +14,7 @@ app.use(express.json()); //metodo que tiene express para devolver json y no text
 require('dotenv').config() // modulo dotenv para que se configure
 
 
-const mongoose =require('mongoose') //para la base de datos
+const mongoose = require('mongoose') //para la base de datos
 
 
 const mongoDB = //string que enviamos

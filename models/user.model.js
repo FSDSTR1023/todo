@@ -9,6 +9,7 @@ const userSchema = new Schema(
     lastName: { type: String, required: true, trim: true, minlength: 3 },
     email: { type: String, required: true, trim: true, minlength: 3, unique: true },
     password: { type: String, required: true, trim: true, minlength: 3 },
+    tasks: [{ type: Schema.Types.ObjectId, ref: 'Task' }],
 },
 {
     timestamps: true,

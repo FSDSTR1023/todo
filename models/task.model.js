@@ -32,16 +32,16 @@ const taskSchema = new Schema({
     status: {type : String,
         required: true, default: 'pending'},
 
-        user: {
-            type: Schema.Types.ObjectId,
-            ref: 'User',
-
-
+      
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
     },
-
-
-
-})
+},
+{
+    timestamps: true 
+},)
 
 
 module.exports = mongoose.model('Task', taskSchema);

@@ -43,7 +43,7 @@ async function loginUser(req, res) {
         return res.status(404).json({ msg: 'User not found' });
       }
       if (!req.body.password || user.password !== req.body.password) {
-        return res.status(403).json({ msg: 'Forbidden' });
+        return res.status(403).json({ msg: 'Incorrect password' });
       }
       res.status(200).json(user);
     })
