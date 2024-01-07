@@ -11,7 +11,7 @@ app.use(cors({
 )
 
 
-app.use(express.json()); //metodo que tiene express para devolver json y no texto plano
+// app.use(express.json()); //metodo que tiene express para devolver json y no texto plano
 
 
 require('dotenv').config() // modulo dotenv para que se configure
@@ -20,7 +20,7 @@ require('dotenv').config() // modulo dotenv para que se configure
 const mongoose =require('mongoose') //para la base de datos
 
 
-const mongoDB = //string que enviamos
+ const mongoDB = //string que enviamos
   'mongodb+srv://' +
   process.env.DB_USER +
   ':' +
